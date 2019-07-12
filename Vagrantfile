@@ -5,7 +5,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 config.ssh.insert_key = false
 config.vm.box_check_update = false
 config.vm.define "ipa" do |ipa|
-  ipa.vm.box = "centos/7"
+  ipa.vm.box = "generic/rhel8"
   ipa.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
   ipa.vm.network "forwarded_port", guest: 80, host: 8081
   ipa.vm.network "forwarded_port", guest: 443, host: 8445
@@ -20,7 +20,7 @@ config.vm.define "ipa" do |ipa|
 end
   
 config.vm.define "system" do |system|
-  system.vm.box = "puppetlabs/centos-7.0-64-nocm"
+  system.vm.box = "generic/rhel8"
   system.vm.network "forwarded_port", guest: 80, host: 8082
   system.vm.network "forwarded_port", guest: 443, host: 8450
   system.vm.hostname = "system1.example.com"
