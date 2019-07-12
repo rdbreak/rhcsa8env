@@ -19,11 +19,11 @@
 #       gpgcheck=1
 #       gpgkey=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/RPM-GPG-KEY-CentOS-7
 #       enabled=1
-  - name: Installing Exam Environment Packages
-    yum:
-      name: 
-      - libselinux-python
-      state: present
+#  - name: Installing Exam Environment Packages
+#    yum:
+#      name: 
+#      - libselinux-python
+#      state: present
 ## These would only be needed for using the "expect" module
 #      - epel-release
 #  - name: Installing PIP
@@ -56,9 +56,9 @@
       line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
       create: yes
   - name: Configuring network
-    command: nmcli con mod "System enp0s8" ipv4.addresses "192.168.55.6/24 192.168.55.1" ipv4.dns 192.168.55.5 ipv4.dns-search example.com ipv4.method manual
-  - name: Stopping NTP services
-    service: name=ntpd state=stopped
+    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.6/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.5 ipv4.dns-search example.com ipv4.method manual
+#  - name: Stopping NTP services
+#    service: name=ntpd state=stopped
 #  - name: Configuring IPA client
 #    expect:
 #    command: ipa-client-install --enable-dns-updates -N --principal admin --server ipa.example.com -w password --hostname=system1.example.com --realm=EXAMPLE.COM --domain=example.com -U

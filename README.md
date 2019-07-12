@@ -6,7 +6,7 @@
 - [Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
 - [Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
 
-Once the setup is complete, the ipa server and client for realm EXAMPLE.COM will already been setup and paired. 
+This environment is meant to be reproducable. Meaning the first time `vagrant up --provider virtualbox` is run, it will take the longest. You can run `vagrant destroy -f` to erase your environment. When you run the vagrant up command above once more, the OS image will already be downloaded and environment will build faster everytime after that. 
 
 The machines will take about 10 minutes to fully set up and then they will reboot at the end.
 
