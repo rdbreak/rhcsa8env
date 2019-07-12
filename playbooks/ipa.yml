@@ -2,13 +2,11 @@
 - hosts: ipa
   become: true
   tasks:
-  - name: Installing Exam Environment Packages
-    yum:
-      name:
-      - vsftpd
-      - ipa-server
-      - ipa-server-dns
-      state: present
+#  - name: Installing Environment Packages
+#    yum:
+#      name:
+#      - vsftpd
+#      state: present
   - name: Fixing hosts file
     lineinfile:
       dest: /etc/hosts
@@ -36,19 +34,19 @@
       create: yes
   - name: Configuring network
     shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.5/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search example.com ipv4.method manual
-  - name: Configuring IPA server
-    command: ipa-server-install --setup-dns --allow-zone-overlap -a 'password' --hostname=ipa.example.com -r EXAMPLE.COM -p 'password' -n example.com -U --forwarder 8.8.8.8
+#  - name: Configuring IPA server
+#    command: ipa-server-install --setup-dns --allow-zone-overlap -a 'password' --hostname=ipa.example.com -r EXAMPLE.COM -p 'password' -n example.com -U --forwarder 8.8.8.8
     ignore_errors: yes
   - name: Enabling services
     service: name={{item}} enabled=true
     with_items:
-      - httpd
-      - vsftpd
+#      - httpd
+#      - vsftpd
       - firewalld
   - name: Starting services
     service: name={{item}} state=started
     with_items:
-      - vsftpd
+#      - vsftpd
       - firewalld
   - name: Allowing Firewall Services
     command: firewall-cmd --permanent --add-service=http --add-service=https --add-service=ntp --add-service=dns --add-service=kerberos --add-service=ldap --add-service=ldaps --add-service=ftp
