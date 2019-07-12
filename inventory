@@ -1,0 +1,4 @@
+[ipa]
+ipa.example.com ansible_user=vagrant ansible_ssh_pass=vagrant
+[system]
+system1.example.com ansible_user=vagrant ansible_ssh_pass=vagrant
