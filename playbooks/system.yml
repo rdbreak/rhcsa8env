@@ -43,12 +43,12 @@
   - name: Adding system IP address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.6 system1.example.com system1
+      line: 192.168.55.11 system1.example.com system1
       create: yes
   - name: Adding IPA address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.5 ipa.example.com ipa
+      line: 192.168.55.10 ipa.example.com ipa
       create: yes
   - name: Rebuilding host file
     lineinfile:
@@ -56,7 +56,7 @@
       line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
       create: yes
   - name: Configuring network
-    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.6/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.5 ipv4.dns-search example.com ipv4.method manual
+    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.11/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.10 ipv4.dns-search example.com ipv4.method manual
 #  - name: Stopping NTP services
 #    service: name=ntpd state=stopped
 #  - name: Configuring IPA client
@@ -72,3 +72,4 @@
     service: name=firewalld state=started
   - name: Rebooting machine
     reboot:
+      reboot_timeout: 60
