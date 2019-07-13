@@ -2,11 +2,25 @@
 - hosts: ipa
   become: true
   tasks:
-#  - name: Installing Environment Packages
-#    yum:
-#      name:
-#      - vsftpd
-#      state: present
+# - name: Creating Repo File
+#   file:
+#     path: /etc/yum.repos.d/ipa.repo
+#     state: touch
+# - name: Building Repo File
+#   blockinfile:
+#     path: /etc/yum.repos.d/ipa.repo
+#     block: |
+#      [ipa]
+#      name=ipa repo
+#      baseurl=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/
+#      gpgcheck=1
+#      gpgkey=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/RPM-GPG-KEY-CentOS-7
+#      enabled=1
+# - name: Installing Environment Packages
+#   dnf:
+#     name:
+#     - vsftpd
+#     state: present
   - name: Fixing hosts file
     lineinfile:
       dest: /etc/hosts
@@ -25,15 +39,15 @@
   - name: Adding IPA address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.5 ipa.example.com ipa
+      line: 192.168.55.10 ipa.example.com ipa
       create: yes
   - name: Adding system1 address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.6 system1.example.com system1
+      line: 192.168.55.11 system1.example.com system1
       create: yes
   - name: Configuring network
-    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.5/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search example.com ipv4.method manual
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.10/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search example.com ipv4.method manual
 #  - name: Configuring IPA server
 #    command: ipa-server-install --setup-dns --allow-zone-overlap -a 'password' --hostname=ipa.example.com -r EXAMPLE.COM -p 'password' -n example.com -U --forwarder 8.8.8.8
     ignore_errors: yes
