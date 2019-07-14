@@ -1,69 +1,57 @@
 ---
 - hosts: ipa
-  become: true
+  strategy: free
+  gather_facts: False
   tasks:
-# - name: Creating Repo File
-#   file:
-#     path: /etc/yum.repos.d/ipa.repo
-#     state: touch
-# - name: Building Repo File
-#   blockinfile:
-#     path: /etc/yum.repos.d/ipa.repo
-#     block: |
-#      [ipa]
-#      name=ipa repo
-#      baseurl=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/
-#      gpgcheck=1
-#      gpgkey=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/RPM-GPG-KEY-CentOS-7
-#      enabled=1
-# - name: Installing Environment Packages
-#   dnf:
-#     name:
-#     - vsftpd
-#     state: present
   - name: Fixing hosts file
     lineinfile:
       dest: /etc/hosts
       regexp: '^127\.0\.0\.1'
       state: absent
-  - name: Rebuilding host file
+  - name: Adding localhost IPV4 address to host file
     lineinfile:
       path: /etc/hosts
       line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
       create: yes
-  - name: Rebuilding host file
+  - name: Adding localhost IPV6 address to host file
     lineinfile:
       path: /etc/hosts
       line: ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
       create: yes
-  - name: Adding IPA address to hosts file
+  - name: Adding ipa to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.10 ipa.example.com ipa
+      line: 192.168.55.10 ipa.eight.example.com ipa.eight
       create: yes
-  - name: Adding system1 address to hosts file
+  - name: Adding system address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.11 system1.example.com system1
+      line: 192.168.55.11 system1.eight.example.com system1.eight
       create: yes
-  - name: Configuring network
-    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.10/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search example.com ipv4.method manual
-#  - name: Configuring IPA server
-#    command: ipa-server-install --setup-dns --allow-zone-overlap -a 'password' --hostname=ipa.example.com -r EXAMPLE.COM -p 'password' -n example.com -U --forwarder 8.8.8.8
-    ignore_errors: yes
+  - name: Installing Environment Packages
+    command: yum install -y httpd vsftpd
+#    async: 600
+#    poll: 0
+#    register: yum_sleeper
+#  - name: ---> Not Failing, Just Finishing Environment Package Installation...
+#    async_status: jid={{ yum_sleeper.ansible_job_id }}
+#    register: job_result
+#    until: job_result.finished
+#    retries: 50
   - name: Enabling services
     service: name={{item}} enabled=true
     with_items:
-#      - httpd
-#      - vsftpd
+      - httpd
+      - vsftpd
       - firewalld
-  - name: Starting services
-    service: name={{item}} state=started
-    with_items:
-#      - vsftpd
-      - firewalld
-  - name: Allowing Firewall Services
+      - ntpd
+  - name: Starting Firewalld
+    service: name=firewalld state=started
+  - name: Enabling Firewall Services
     command: firewall-cmd --permanent --add-service=http --add-service=https --add-service=ntp --add-service=dns --add-service=kerberos --add-service=ldap --add-service=ldaps --add-service=ftp
   - name: Reloading Firewall
     command: firewall-cmd --reload
-    
+  - name: Configuring network
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.5/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search example.com ipv4.method manual
+  - name: Reloading Network Configuration
+    shell: nmcli con up "System eth1"  
