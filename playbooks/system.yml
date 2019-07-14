@@ -33,9 +33,12 @@
       path: /etc/hosts
       line: 192.168.55.11 system.eight.example.com system.eight
       create: yes
-
   - name: Configuring network
-    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.11/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.10 ipv4.dns-search eight.example.com ipv4.method manual
+    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.11/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.method manual
+  - name: Saving network config
+    command: nmcli con up "System eth1" 
+  - name: Fixing Resolv File
+    command: echo 'nameserver 8.8.8.8' > /etc/resolv.conf
 #  - name: Configuring IPA client
 #    expect:
 #    command: ipa-client-install --enable-dns-updates -N --principal admin --server ipa.eight.example.com -w password --hostname=system1.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
