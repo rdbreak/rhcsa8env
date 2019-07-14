@@ -23,11 +23,6 @@
       path: /etc/hosts
       line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
       create: yes
-  - name: Adding IPA address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.10 ipa.eightexample.com ipa.eight
-      create: yes
   - name: Adding system IP address to hosts file
     lineinfile:
       path: /etc/hosts
