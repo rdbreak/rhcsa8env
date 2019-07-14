@@ -11,16 +11,12 @@
 - system1.example.com
 
 ### Network Details:
-###### ipa
+###### system
 192.168.55.5
-###### system1
-192.168.55.6
-###### system2
-192.168.55.7
 
 ### Username/Password
 - Username - vagrant
-- Password - vagrant
+- Password - password
 
 ## Set Up Instructions
 1. Create a seperate `/bin` directory and `cd` to it. 
@@ -29,4 +25,4 @@
 
 _NOTE - You can use the VirtualBox console to interact with the VMs or through a terminal. If you need to reset the root password, you would need to use the console though._
 
-The first time you run the vagrant up command, it will download the OS images for later use. In other words, it will take longest the first time around but will be faster when it is deployed again. You can run `vagrant destroy -f` to destroy your environment at anytime. **This will erase everything**. This environment is meant to be reuseable, If you run the `vagrant up --provider virtualbox` command after destroying the environment, the OS image will already be downloaded and environment will deploy faster. Once the setup is complete, the ipa server and client for realm EXAMPLE.COM will already be setup and paired. Deployment should take around 10 minutes depending on your computer. You shouldn't need to access the IPA server during your exam. Everything should be provided that you would normally need during an actual exam. Hope this helps you in your studies!
+The first time you run the vagrant up command, it will download the OS images for later use. In other words, it will take longest the first time around but will be faster when it is deployed again. You can run `vagrant destroy -f` to destroy your environment at anytime. **This will erase everything**. This environment is meant to be reuseable, If you run the `vagrant up --provider virtualbox` command after destroying the environment, the OS image will already be downloaded and environment will deploy faster. Deployment should take around 10 minutes depending on your computer. You shouldn't need to access the IPA server during your exam. Everything should be provided that you would normally need during an actual exam. Hope this helps you in your studies!
