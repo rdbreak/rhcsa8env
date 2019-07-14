@@ -1,4 +1,4 @@
-[ipa]
-ipa.example.com ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python
 [system]
-system1.example.com ansible_user=vagrant ansible_ssh_pass=vagrant
+system.example.com ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python
+[test]
+test.example.com ansible_user=vagrant ansible_ssh_pass=vagrant

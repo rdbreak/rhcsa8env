@@ -1,7 +1,15 @@
 ---
 - hosts: system
-  become: true
+  gather_facts: false
   tasks:
+  - name: Setting up user
+    user:
+      name: user
+      comment: user
+      uid: 2000
+      group: wheel
+  - name: Changing User Password
+    command: echo password | sudo passwd user --stdin
   - name: Disabling services
     selinux:
       state: disabled
@@ -27,12 +35,10 @@
       create: yes
 
   - name: Configuring network
-    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.11/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.10 ipv4.dns-search example.com ipv4.method manual
-#  - name: Stopping NTP services
-#    service: name=ntpd state=stopped
+    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.11/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.10 ipv4.dns-search eight.example.com ipv4.method manual
 #  - name: Configuring IPA client
 #    expect:
-#    command: ipa-client-install --enable-dns-updates -N --principal admin --server ipa.example.com -w password --hostname=system1.example.com --realm=EXAMPLE.COM --domain=example.com -U
+#    command: ipa-client-install --enable-dns-updates -N --principal admin --server ipa.eight.example.com -w password --hostname=system1.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
 #    ignore_errors: yes
       #responses:
       #  (?i)user: "admin"
