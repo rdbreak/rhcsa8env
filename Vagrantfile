@@ -1,5 +1,6 @@
 VAGRANTFILE_API_VERSION = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = "1"
+file_to_disk = './disk-0-0.vdi'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Use same SSH key for each machine
 config.ssh.insert_key = false
