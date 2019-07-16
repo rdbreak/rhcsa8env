@@ -1,15 +1,26 @@
 ---
 - hosts: system
-  gather_facts: false
+  strategy: free
+  gather_facts: False
   tasks:
-  - name: Setting up user
-    user:
-      name: user
-      comment: user
-      uid: 2000
-      group: wheel
   - name: Changing User Password
-    command: echo password | sudo passwd user --stdin
+    shell: echo vagrant | sudo passwd vagrant --stdin
+#  - name: Creating Temporary Repo File
+#    file:
+#      path: /etc/yum.repos.d/ipa.repo
+#      state: touch
+#      mode: 0755
+#  - name: Building Repo File
+#    blockinfile:
+#      dest: /etc/yum.repos.d/ipa.repo
+#      block: |
+#       [ipa]
+#       name=ipa repo
+#       baseurl=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/
+#       gpgcheck=1
+#       gpgkey=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/RPM-GPG-KEY-CentOS-7
+#       enabled=1
+#    tags: repo
   - name: Disabling services
     selinux:
       state: disabled
@@ -23,28 +34,55 @@
       path: /etc/hosts
       line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
       create: yes
+  - name: Adding IPA address to hosts file
+    lineinfile:
+      path: /etc/hosts
+      line: 192.168.55.150 ipa.eight.example.com ipa
+      create: yes
   - name: Adding system IP address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.11 system.eight.example.com system.eight
+      line: 192.168.55.151 system.eight.example.com system
       create: yes
   - name: Configuring network
-    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.11/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.method manual
+    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.151/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.150 ipv4.dns-search eight.example.com ipv4.method manual
   - name: Saving network config
     command: nmcli con up "System eth1" 
   - name: Fixing Resolv File
-    command: echo 'nameserver 8.8.8.8' > /etc/resolv.conf
-#  - name: Configuring IPA client
-#    expect:
-#    command: ipa-client-install --enable-dns-updates -N --principal admin --server ipa.eight.example.com -w password --hostname=system1.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
+    command: echo 'nameserver 192.168.55.150' > /etc/resolv.conf
+#  - name: Enabling Authconfig. Installing Environment Packages...
+#    command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
+  - name: Environment Packages Installed.
+    shell: yum install -y man-pages 
+##  - name: Erasing Repos
+##    shell: rm -rf /etc/yum.repos.d/*
+##    tags: repo
+#    async: 500
+#    poll: 0
+#    register: yum_sleeper
+#  - name: Finishing Environment Package Installation Before IPA Client Configuration
+#    async_status: jid={{ yum_sleeper.ansible_job_id }}
+#    register: job_result
+#    until: job_result.finished
+#    retries: 40  
+#  - name: IPA client Configured
+#    command: ipa-client-install --enable-dns-updates --mkhomedir -N --principal admin --server ipa.example.com -w password --hostname=system.example.com --realm=EXAMPLE.COM --domain=example.com -U
 #    ignore_errors: yes
-      #responses:
-      #  (?i)user: "admin"
-      #  (?i)password: "password"
+#    async: 500
+#    poll: 0
+#    register: ipa_sleeper
   - name: Enabling services
     service: name=firewalld enabled=true
   - name: Starting services
     service: name=firewalld state=started
+#  - name: Finishing IPA client configuration
+#    async_status: jid={{ ipa_sleeper.ansible_job_id }}
+#    register: job_result
+#    until: job_result.finished
+#    retries: 40
+#  - name: Erasing Repos
+#    shell: rm -rf /etc/yum.repos.d/*
+#    tags: repo
   - name: Rebooting machine
     reboot:
       reboot_timeout: 60

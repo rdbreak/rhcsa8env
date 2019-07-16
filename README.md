@@ -21,16 +21,17 @@ _NOTE - You can use the VirtualBox console to interact with the VMs or through a
 The first time you run the vagrant up command, it will download the OS images for later use. In other words, it will take longest the first time around but will be faster when it is deployed again. You can run `vagrant destroy -f` to destroy your environment at anytime. **This will erase everything**. This environment is meant to be reuseable, If you run the `vagrant up --provider virtualbox` command after destroying the environment, the OS image will already be downloaded and environment will deploy faster. Deployment should take around 10 minutes depending on your computer. You shouldn't need to access the IPA server during your exam. Everything should be provided that you would normally need during an actual exam. Hope this helps in your studies!
 
 ### This environment includes two systems:
-- ipa.example.com
-- system1.example.com
+- system.eight.example.com
 
 ### Network Details:
 ###### system
-192.168.55.5
+192.168.55.151
 
-### Username/Password
-- Username - vagrant
-- Password - password
+### Accessing the systems
+Remember to add the IP addresses to your local host file if you want to connect to the guest systems with the hostname.
+Username - vagrant
+Password - vagrant
+- For root - use `sudo` or `sudo su`
 
 ## Help
-If you're having problems with the environment, please submit an issue by going to the `ISSUE` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join, please navigate to #practiceexam in the [Red Hat Certs Slack Workspace](https://join.slack.com/t/redhat-certs/shared_invite/enQtNjAxNDc3MzYyMTAxLWZlM2ZhMGRlNGI2YjQyMzQ4NWEyNDIyYTJiNzcxM2E1ZDVkZmQ4MzU2MTc0ZDRlNzg2MTU5NWIwZjFjZDdjMGE).
+If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join, please navigate to #practiceexam in the [Red Hat Certs Slack Workspace](https://join.slack.com/t/redhat-certs/shared_invite/enQtNjAxNDc3MzYyMTAxLWZlM2ZhMGRlNGI2YjQyMzQ4NWEyNDIyYTJiNzcxM2E1ZDVkZmQ4MzU2MTc0ZDRlNzg2MTU5NWIwZjFjZDdjMGE).
