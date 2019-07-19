@@ -1,8 +1,13 @@
 ---
 - hosts: ipa
   strategy: free
-  gather_facts: true
+  gather_facts: false
   tasks:
+  - name: Setting Up Python
+    file:
+      src: /usr/bin/python3.6
+      path: /usr/bin/python
+      state: link
   - name: Fixing hosts file
     lineinfile:
       dest: /etc/hosts
@@ -28,30 +33,11 @@
       path: /etc/hosts
       line: 192.168.55.151 system1.eight.example.com system1
       create: yes
-#  - name: Installing DL1 Stream
-#    command: yum install -y @idm:DL1
-    tags: repo
-  - name: Installing Packages
-    yum: 
-      name:
-#        - ipa-server-dns 
-#        - bind-dyndb-ldap
-        - httpd
-        - vsftpd
-        - createrepo
-#        - freeipa-server
-      state: present
+  - name: Installing DL1 Stream And Packages
+    shell: dnf install -y @idm:DL1; dnf install -y ipa-server ipa-server-dns bind-dyndb-ldap vsftpd createrepo pki-ca
     tags: repo
   - name: Configuring Repo For System
     command: createrepo /var/www/html/rpms
-#    async: 600
-#    poll: 0
-#    register: yum_sleeper
-#  - name: ---> Not Failing, Just Finishing Environment Package Installation...
-#    async_status: jid={{ yum_sleeper.ansible_job_id }}
-#    register: job_result
-#    until: job_result.finished
-#    retries: 50
   - name: Enabling services
     service: name={{item}} enabled=true
     with_items:
@@ -71,44 +57,49 @@
     shell: nmcli con up "System eth1"  
   - name: Enabling IPV6
     shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
-#  - name: Finishing IPA server Configuration
-#    shell: ipa-server-install --setup-dns --allow-zone-overlap --auto-reverse -a 'password' --hostname ipa.eight.example.com -r EIGHT.EXAMPLE.COM -p 'password' -n eight.example.com -U --forwarder 8.8.8.8
-#  - name: Adding IPA user 'dave'
-#    ipa_user:
-#        name: dave
-#        state: present
-#        krbpasswordexpiration: 20200119235959
-#        givenname: dave
-#        sn: dave
-#        mail:
-#        - dave@eight.example.com
-#        telephonenumber:
-#        - '+555123456'
-#        sshpubkey:
-#        password: password
-#        uidnumber: 1001
-#        gidnumber: 1000
-#        ipa_host: ipa.eight.example.com
-#        ipa_user: admin
-#        ipa_pass: password
-#  - name: Adding IPA user 'lisa'
-#    ipa_user:
-#        name: lisa
-#        state: present
-#        krbpasswordexpiration: 20200119235959
-#        givenname: lisa
-#        sn: lisa
-#        mail:
-#        - lisa@eight.example.com
-#        telephonenumber:
-#        - '+555123456'
-#        sshpubkey:
-#        password: password
-#        uidnumber: 1002
-#        gidnumber: 1001
-#        ipa_host: ipa.eight.example.com
-#        ipa_user: admin
-#        ipa_pass: password   
+  - name: Fixing Permissions
+    shell: chmod 644 /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py;chmod u+x /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py 
+  - name: Finishing IPA server Configuration
+    shell: ipa-server-install --setup-dns --allow-zone-overlap --auto-reverse -a 'password' --hostname ipa.eight.example.com -r EIGHT.EXAMPLE.COM -p 'password' -n eight.example.com -U --forwarder 8.8.8.8
+    ignore_errors: true
+  - name: Restarting IPA Services
+    shell: ipactl start --ignore-service-failure
+  - name: Adding IPA user 'dave'
+    ipa_user:
+        name: dave
+        state: present
+        krbpasswordexpiration: 20200119235959
+        givenname: dave
+        sn: dave
+        mail:
+        - dave@eight.example.com
+        telephonenumber:
+        - '+555123456'
+        sshpubkey:
+        password: password
+        uidnumber: 1001
+        gidnumber: 1000
+        ipa_host: ipa.eight.example.com
+        ipa_user: admin
+        ipa_pass: password
+  - name: Adding IPA user 'lisa'
+    ipa_user:
+        name: lisa
+        state: present
+        krbpasswordexpiration: 20200119235959
+        givenname: lisa
+        sn: lisa
+        mail:
+        - lisa@eight.example.com
+        telephonenumber:
+        - '+555123456'
+        sshpubkey:
+        password: password
+        uidnumber: 1002
+        gidnumber: 1001
+        ipa_host: ipa.eight.example.com
+        ipa_user: admin
+        ipa_pass: password   
   - name: Setting SELinux To Permissive
     shell: setenforce 0
 #    async: 1500

@@ -3,24 +3,26 @@
   strategy: free
   gather_facts: False
   tasks:
-  - name: Changing User Password
-    shell: echo vagrant | sudo passwd vagrant --stdin
-#  - name: Creating Temporary Repo File
-#    file:
-#      path: /etc/yum.repos.d/ipa.repo
-#      state: touch
-#      mode: 0755
-#  - name: Building Repo File
-#    blockinfile:
-#      dest: /etc/yum.repos.d/ipa.repo
-#      block: |
-#       [ipa]
-#       name=ipa repo
-#       baseurl=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/
-#       gpgcheck=1
-#       gpgkey=http://reflector.westga.edu/repos/CentOS/7/os/x86_64/RPM-GPG-KEY-CentOS-7
-#       enabled=1
-#    tags: repo
+  - name: Setting Up Python
+    file:
+      src: /usr/bin/python3.6
+      path: /usr/bin/python
+      state: link
+  - name: Creating Temporary Repo File
+    file:
+      path: /etc/yum.repos.d/ipa.repo
+      state: touch
+      mode: 0755
+  - name: Building Repo File
+    blockinfile:
+      dest: /etc/yum.repos.d/ipa.repo
+      block: |
+       [ipa]
+       name=ipa repo
+       baseurl=http://ipa.eight.example.com/rpms
+       gpgcheck=0
+       enabled=1
+    tags: repo
   - name: Disabling services
     selinux:
       state: disabled
@@ -50,39 +52,41 @@
     command: nmcli con up "System eth1" 
   - name: Fixing Resolv File
     command: echo 'nameserver 192.168.55.150' > /etc/resolv.conf
-#  - name: Enabling Authconfig. Installing Environment Packages...
-#    command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
+  - name: Enabling Authconfig. Installing Environment Packages...
+    command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
   - name: Environment Packages Installed.
     shell: yum install -y man-pages 
-##  - name: Erasing Repos
-##    shell: rm -rf /etc/yum.repos.d/*
-##    tags: repo
-#    async: 500
-#    poll: 0
-#    register: yum_sleeper
-#  - name: Finishing Environment Package Installation Before IPA Client Configuration
-#    async_status: jid={{ yum_sleeper.ansible_job_id }}
-#    register: job_result
-#    until: job_result.finished
-#    retries: 40  
-#  - name: IPA client Configured
-#    command: ipa-client-install --enable-dns-updates --mkhomedir -N --principal admin --server ipa.example.com -w password --hostname=system.example.com --realm=EXAMPLE.COM --domain=example.com -U
-#    ignore_errors: yes
-#    async: 500
-#    poll: 0
-#    register: ipa_sleeper
+    tags: repo
+    async: 500
+    poll: 0
+    register: yum_sleeper
+  - name: Finishing Environment Package Installation Before IPA Client Configuration
+    async_status: jid={{ yum_sleeper.ansible_job_id }}
+    register: job_result
+    until: job_result.finished
+    retries: 40  
+  - name: Erasing Repos
+    shell: rm -rf /etc/yum.repos.d/*
+  - name: IPA client Configured
+    command: ipa-client-install --enable-dns-updates --mkhomedir -N --principal admin --server ipa.eight.example.com -w password --hostname=system.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
+    ignore_errors: yes
+    async: 500
+    poll: 0
+    register: ipa_sleeper
   - name: Enabling services
     service: name=firewalld enabled=true
   - name: Starting services
     service: name=firewalld state=started
-#  - name: Finishing IPA client configuration
-#    async_status: jid={{ ipa_sleeper.ansible_job_id }}
-#    register: job_result
-#    until: job_result.finished
-#    retries: 40
-#  - name: Erasing Repos
-#    shell: rm -rf /etc/yum.repos.d/*
-#    tags: repo
+  - name: Finishing IPA client configuration
+    async_status: jid={{ ipa_sleeper.ansible_job_id }}
+    register: job_result
+    until: job_result.finished
+    retries: 40
+  - name: Erasing Repos
+    shell: rm -rf /etc/yum.repos.d/*
+  - name: Changing User Password
+    shell: echo vagrant | sudo passwd vagrant --stdin
+    tags: repo
   - name: Rebooting machine
     reboot:
       reboot_timeout: 60
