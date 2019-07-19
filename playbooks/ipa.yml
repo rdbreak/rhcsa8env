@@ -57,7 +57,7 @@
     shell: nmcli con up "System eth1"  
   - name: Enabling IPV6
     shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
-  - name: Fixing Permissions
+  - name: Permissions Fixed. Configuring IPA Server, please wait...
     shell: chmod 644 /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py;chmod u+x /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py 
   - name: Finishing IPA server Configuration
     shell: ipa-server-install --setup-dns --allow-zone-overlap --auto-reverse -a 'password' --hostname ipa.eight.example.com -r EIGHT.EXAMPLE.COM -p 'password' -n eight.example.com -U --forwarder 8.8.8.8
