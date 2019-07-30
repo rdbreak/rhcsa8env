@@ -38,6 +38,8 @@
     tags: repo
   - name: Configuring Repo For System
     command: createrepo /var/www/html/rpms
+  - name: Downloading Repo Packages for System1
+    shell: yum install -y man-pages httpd-manual selinux\* sssd\* bash-completion --downloadonly --downloaddir=/var/www/html/rpms; yum install -y @idm:DL1 --downloadonly --downloaddir=/var/www/html/rpms; yum install -y bind-dyndb-ldap ipa-server ipa-server-dns --downloadonly --downloaddir=/var/www/html/rpms ; for i in "Development Tools" "Container Management" "Workstation" "Graphical Administration Tools" ; do yum group install "$i" -y --downloadonly --downloaddir=/var/www/html/rpms;done
   - name: Enabling services
     service: name={{item}} enabled=true
     with_items:

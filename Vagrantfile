@@ -14,7 +14,7 @@ config.vm.define "ipa" do |ipa|
   ipa.vm.provision :shell, :inline => "mkdir -p /var/www/html/rpms; ", run: "always"
   ipa.vm.provision :shell, :inline => "for i in \"Development Tools\" \"Container Management\" \"Workstation\" \"Graphical Administration Tools\" ; do yum group install \"$i\" -y --downloadonly --downloaddir=/var/www/html/rpms;done;", run: "always"
   ipa.vm.provision :shell, :inline => "ln -s /usr/bin/python3.6 /usr/bin/python", run: "always"
-  ipa.vm.provision :shell, :inline => "yum install -y man-pages httpd-manual selinux\* sssd\* --downloadonly --downloaddir=/var/www/html/rpms; yum install -y @idm:DL1 --downloadonly --downloaddir=/var/www/html/rpms; yum install -y bind-dyndb-ldap ipa-server ipa-server-dns --downloadonly --downloaddir=/var/www/html/rpms;", run: "always"
+  ipa.vm.provision :shell, :inline => "yum install -y man-pages httpd-manual selinux\* sssd\* bash-completion --downloadonly --downloaddir=/var/www/html/rpms; yum install -y @idm:DL1 --downloadonly --downloaddir=/var/www/html/rpms; yum install -y bind-dyndb-ldap ipa-server ipa-server-dns --downloadonly --downloaddir=/var/www/html/rpms;", run: "always"
   ipa.vm.hostname = "ipa.eight.example.com"
   ipa.vm.network "private_network", ip: "192.168.55.150"
   ipa.vm.provider :virtualbox do |ipa|

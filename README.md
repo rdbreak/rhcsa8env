@@ -1,10 +1,10 @@
 # RHCSA 8 Study/Test Environment powered by Ansible and Vagrant. 
 
 ## Required software before setting up:
-- Ansible - (`yum install ansible` or `brew install ansible`)
+- Latest Ansible - (`yum install ansible` or `brew install ansible`)
 - Python - (`yum install python`or `brew install python`)
-- [Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
-- [Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
+- [Latest Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
+- [Latest Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
 - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
 
 ### Install at once with the command below:

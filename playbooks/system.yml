@@ -55,7 +55,7 @@
   - name: Enabling Authconfig. Installing Environment Packages...
     command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
   - name: Environment Packages Installed.
-    shell: yum install -y man-pages 
+    shell: yum install -y man-pages ipa-client
     tags: repo
     async: 500
     poll: 0
@@ -68,7 +68,7 @@
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
   - name: IPA client Configured
-    command: ipa-client-install --enable-dns-updates --mkhomedir -N --principal admin --server ipa.eight.example.com -w password --hostname=system.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
+    command: ipa-client-install --enable-dns-updates --force-join --mkhomedir -N --principal admin --server ipa.eight.example.com -w password --hostname=system.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
     ignore_errors: yes
     async: 500
     poll: 0
