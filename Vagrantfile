@@ -8,18 +8,24 @@ config.vm.box_check_update = false
 config.vm.define "ipa" do |ipa|
   ipa.vm.box = "generic/oracle8"
   ipa.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
-  ipa.vm.provision :shell, :inline => "ln -s /usr/bin/python3.6 /usr/bin/python", run: "always"
-  ipa.vm.provision :shell, :inline => "sudo yum install -y @idm:DL1 ;sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y; sudo dnf -y install python36;", run: "always"
-#  ipa.vm.provision :shell, :inline => "sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py ; python get-pip.py ; sudo pip install -U pip ; sudo pip3 install pexpect;", run: "always"
+#  ipa.vm.provision :shell, :inline => "ln -s /usr/bin/python3.6 /usr/bin/python", run: "always"
+  ipa.vm.provision :shell, :inline => "sudo yum install -y createrepo @idm:DL1; sudo dnf -y install python36 python2 python2-pip python3-pip python2-setuptools python3-setuptools python2-devel python36-devel python3-cryptography;", run: "always"
   ipa.vm.provision :shell, :inline => "mkdir -p /var/www/html/rpms; ", run: "always"
-  ipa.vm.provision :shell, :inline => "for i in \"Development Tools\" \"Container Management\" \"Workstation\" \"Graphical Administration Tools\" ; do yum group install \"$i\" -y --downloadonly --downloaddir=/var/www/html/rpms;done;", run: "always"
-  ipa.vm.provision :shell, :inline => "ln -s /usr/bin/python3.6 /usr/bin/python", run: "always"
-  ipa.vm.provision :shell, :inline => "yum install -y man-pages httpd-manual selinux\* sssd\* bash-completion --downloadonly --downloaddir=/var/www/html/rpms; yum install -y @idm:DL1 --downloadonly --downloaddir=/var/www/html/rpms; yum install -y bind-dyndb-ldap ipa-server ipa-server-dns --downloadonly --downloaddir=/var/www/html/rpms;", run: "always"
+  ipa.vm.provision :shell, :inline => "for i in \"Development Tools\" \"Container Management\" \"Workstation\" \"Graphical Administration Tools\" \"GNOME\"; do yum group install \"$i\" -y --downloadonly --destdir=/var/www/html/rpms;done;", run: "always"
+  ipa.vm.provision :shell, :inline => "yum install -y stratis-cli stratisd vdo --downloadonly --downloaddir=/var/www/html/rpms", run: "always"
+  ipa.vm.synced_folder ".", "/vagrant"
   ipa.vm.hostname = "ipa.eight.example.com"
   ipa.vm.network "private_network", ip: "192.168.55.150"
   ipa.vm.provider :virtualbox do |ipa|
     ipa.customize ['modifyvm', :id,'--memory', '2048']
     end
+  ipa.vm.provision :shell, :inline => "pip3 install ansible", run: "always"
+  ipa.vm.provision "ansible_local" do |ansible|
+    ansible.install = false
+    ansible.become = true
+    ansible.playbook = "playbooks/ipa.yml"
+
+  end
 end
   
 config.vm.define "system" do |system|
@@ -29,8 +35,8 @@ config.vm.define "system" do |system|
   system.vm.network "private_network", ip: "192.168.55.175"
   system.vm.network "private_network", ip: "192.168.55.176"
   system.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
-  system.vm.provision :shell, :inline => "sudo yum install -y @idm:DL1 ;sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y; sudo dnf -y install python36;", run: "always"
-  system.vm.provision :shell, :inline => "ln -s /usr/bin/python3.6 /usr/bin/python", run: "always"
+  system.vm.provision :shell, :inline => "sudo yum install -y @idm:DL1; sudo dnf -y install python36 python2 python2-pip python3-pip python2-setuptools python3-setuptools python2-devel python36-devel python3-cryptography;", run: "always"
+  system.vm.synced_folder ".", "/vagrant"
   system.vm.provider "virtualbox" do |system|
     system.memory = "1024"
 
@@ -44,11 +50,10 @@ config.vm.define "system" do |system|
     system.vm.provision "shell", inline: <<-SHELL
     yes| sudo mkfs.ext4 /dev/sdb
     SHELL
-  system.vm.provision "ansible" do |ansible|
-    ansible.version = "latest"
-    ansible.compatibility_mode = "2.0"
-    ansible.limit = "all"
-    ansible.playbook = 'playbooks/master.yml'
+  system.vm.provision :shell, :inline => "pip3 install ansible", run: "always"
+  system.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = 'playbooks/system.yml'
+  system.vm.provision :shell, :inline => "reboot", run: "always"
   end
 end
 end

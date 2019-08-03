@@ -1,13 +1,14 @@
 # RHCSA 8 Study/Test Environment powered by Ansible and Vagrant. 
 
 ## Required software before setting up:
-- Latest Ansible - (`yum install ansible` or `brew install ansible`)
-- Python - (`yum install python`or `brew install python`)
-- [Latest Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
-- [Latest Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
+- [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
+    - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
+- [Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
 - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
 
-### Install at once with the command below:
+If you're using a Mac, Gatekeeper will block virtualbox from installing. All you have to do is go to System Preferences and click Allow under the General tab and rerun installation.
+
+### Install at once with the command below (Linux/Mac only)
 (`brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack`)
 
 If you're using a Mac, Gatekeeper will block virtualbox from installing. All you have to do is go to System Preferences and click Allow under the General tab and rerun installation.
@@ -43,7 +44,7 @@ Remember to add the IP addresses to your local host file if you want to connect 
 Username - vagrant
 Password - vagrant
 - For root - use `sudo` or `sudo su`
-Access example - `ssh vagrant@192.168.55.151`
+Access example - `ssh vagrant@192.168.55.151` or `vagrant ssh system`
 
 ##Known Issues
 Currently there is an issue with the named services during the IPA server setup. This doesn't seem to impact the environment at the moment. Please reach out if it does.
