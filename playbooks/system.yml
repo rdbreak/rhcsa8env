@@ -2,6 +2,7 @@
 - hosts: system
   strategy: free
   gather_facts: False
+  become: true
   tasks:
   - name: Setting Up Python
     file:
