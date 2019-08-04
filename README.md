@@ -13,11 +13,17 @@ If you're using a Mac, Gatekeeper will block virtualbox from installing. All you
 
 Now you should be ready to follow the next steps and get the deployment up and running!
 
-## Once the above software is installed. Do the following:
-1. Create a seperate `~/bin` directory and `cd` to it. 
+## Once the above software is installed. Do the following if you're running the environment on Mac/Linux:
+1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhcsa8env.git`
 3. Change to the `rhcsa7env` directory that is now in your `~/bin` directory.
-3. Run `vagrant up --provider virtualbox` to deploy the environment _(You must be in the directory you cloned the repo to in order to run vagrant commands.)_
+3. Run `vagrant up --provider virtualbox` to deploy the environment 
+
+## Once the above software is installed. Do the following if you're running the environment on Windows:
+1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
+2. Download the environment repo zip from https://github.com/rdbreak/rhcsa8env.git`
+3. Unzip the repo and move the directory into the `~/bin` directory (or whatever directory you created above).
+3. Open CMD prompt and cd to the repo directory then run `vagrant up --provider virtualbox` to deploy the environment 
 
 *Also, don't be spooked by any scary red font during the setup process. There are known issues that won't have a negative affect on the environment.* 
 
