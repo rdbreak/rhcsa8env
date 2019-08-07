@@ -9,6 +9,12 @@
       src: /usr/bin/python3.6
       path: /usr/bin/python
       state: link
+  - name: Configuring network
+    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.151/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.method manual
+  - name: Saving network config
+    command: nmcli con up "System eth1" 
+  - name: Erasing Repos
+    shell: rm -rf /etc/yum.repos.d/*
   - name: Creating Temporary Repo File
     file:
       path: /etc/yum.repos.d/ipa.repo
@@ -47,63 +53,66 @@
       path: /etc/hosts
       line: 192.168.55.151 system.eight.example.com system
       create: yes
-  - name: Configuring network
-    command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.151/24 ipv4.gateway 192.168.55.1 ipv4.dns 192.168.55.150 ipv4.dns-search eight.example.com ipv4.method manual
-  - name: Saving network config
-    command: nmcli con up "System eth1" 
-  - name: Fixing Resolv File
-    command: echo 'nameserver 192.168.55.150' > /etc/resolv.conf
   - name: Enabling Authconfig. Installing Environment Packages...
     command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
   - name: Environment Packages Installed.
-    shell: yum install -y man-pages ipa-client
-    tags: repo
-    async: 500
-    poll: 0
-    register: yum_sleeper
-  - name: Finishing Environment Package Installation Before IPA Client Configuration
-    async_status: jid={{ yum_sleeper.ansible_job_id }}
-    register: job_result
-    until: job_result.finished
-    retries: 40  
+    shell: yum install -y man-pages
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
-  - name: IPA client Configured
-    command: ipa-client-install --enable-dns-updates --force-join --mkhomedir -N --principal admin --server ipa.eight.example.com -w password --hostname=system.eight.example.com --realm=EIGHT.EXAMPLE.COM --domain=eight.example.com -U
-    ignore_errors: yes
-    async: 500
-    poll: 0
-    register: ipa_sleeper
   - name: Enabling services
     service: name=firewalld enabled=true
   - name: Starting services
     service: name=firewalld state=started
-  - name: Finishing IPA client configuration
-    async_status: jid={{ ipa_sleeper.ansible_job_id }}
-    register: job_result
-    until: job_result.finished
-    retries: 40
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
   - name: Changing User Password
     shell: echo vagrant | sudo passwd vagrant --stdin
-    tags: repo
+    become: false
 #  - name: Rebooting machine
 #    reboot:
 #      reboot_timeout: 60
   - name: Welcome to the RHCSA 8 Study/Test Environment!
     debug:
       msg:
-        - 'Next Steps: Accessing The Systems:'
+        - 'System 1 is currently rebooting, give it a couple seconds before accessing'
+        - 'Accessing The Systems:'
         - '- IPA - 192.168.55.150'
         - '- System 1 - 192.168.55.151'
         - '- Username - vagrant'
         - '- Password - vagrant'
-        - '- For root - use `sudo` or `sudo su`'
         - '- Access example - `ssh vagrant@192.168.55.151` or `vagrant ssh system`'
-        - 'LDAP Users'
-        - '- Username = dave, lisa'
-        - '- Password = password'
-        - 'Repo is available to use from `http://ipa.eight.example.com/rpms`'
-        - 'System1 is currently rebooting, give it a few seconds to finish rebooting.'
         - '- Happy Studying!'
+  - name: Creating Welcome Message
+    file:
+      path: /etc/profile.d/welcome.sh
+      state: touch
+      mode: 0755
+  - name: Building Welcome Message
+    blockinfile:
+      dest: /etc/profile.d/welcome.sh
+      mode: 0644
+      block: |
+         #!/bin/bash
+         #
+         echo -e '
+         #          _           _           _    _          _      _           _       _
+         #         / /\        /\ \        /\ \ /\ \    _ / /\    /\ \        /\ \    / /\
+         #        / /  \      /  \ \      /  \ \\ \ \  /_/ / /   /  \ \      /  \ \  / /  \
+         #       / / /\ \__  / /\ \ \    / /\ \ \\ \ \ \___\/   / /\ \ \    / /\ \ \/_/ /\ \
+         #      / / /\ \___\/ / /\ \_\  / / /\ \_/ / /  \ \ \  / / /\ \_\  / / /\ \_\_\/\ \ \
+         #      \ \ \ \/___/ /_/_ \/_/ / / /_/ / \ \ \   \_\ \/ /_/_ \/_/ / / /_/ / /    \ \ \
+         #       \ \ \    / /____/\   / / /__\/ / \ \ \  / / / /____/\   / / /__\/ /      \ \ \
+         #   _    \ \ \  / /\____\/  / / /_____/   \ \ \/ / / /\____\/  / / /_____/        \ \ \
+         #  /_/\__/ / / / / /______ / / /\ \ \      \ \ \/ / / /______ / / /\ \ \         __\ \ \___
+         #  \ \/___/ / / / /_______/ / /  \ \ \      \ \  / / /_______/ / /  \ \ \       /___\_\/__/\
+         #   \_____\/  \/__________\/_/    \_\/       \_\/\/__________\/_/    \_\/       \_________\/
+         '"#
+         # You are logged into `hostname` as the `whoami` user
+         # This system is running `cat /etc/redhat-release`
+         # kernel is `uname -r`
+         #
+         # For root - use \`sudo\` or \`sudo su -\`
+         # Repo is available to use from http://ipa.eight.example.com/rpms
+         # here are also two additional NICs.
+         "
+...
