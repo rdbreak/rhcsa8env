@@ -30,13 +30,7 @@ config.vm.define "system" do |system|
     yes| sudo mkfs.ext4 /dev/sdb
     SHELL
   system.vm.provision :shell, :inline => "pip3 install ansible", run: "always"
-#  system.vm.provision "ansible_local" do |ansible|
-#    ansible.playbook = '/vagrant/playbooks/system.yml'
-#    ansible.install = false
-#    ansible.compatibility_mode = "2.0"
-#    ansible.verbose = true
   system.vm.provision :shell, :inline => "reboot", run: "always"
-#  end
 end
 config.vm.define "ipa" do |ipa|
   ipa.vm.box = "generic/oracle8"
@@ -51,11 +45,6 @@ config.vm.define "ipa" do |ipa|
     ipa.customize ['modifyvm', :id,'--memory', '2048']
     end
   ipa.vm.provision :shell, :inline => "pip3 install ansible", run: "always"
-#  ipa.vm.provision "ansible_local" do |ansible|
-#    ansible.install = false
-#    ansible.playbook = "/vagrant/playbooks/ipa.yml"
-#    ansible.compatibility_mode = "2.0"
-#  end
  ipa.vm.provision :ansible_local do |ansible|
    ansible.playbook = "/vagrant/playbooks/master.yml"
    ansible.install = false
