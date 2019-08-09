@@ -9,6 +9,8 @@
       src: /usr/bin/python3.6
       path: /usr/bin/python
       state: link
+  - name: Setting Hostname
+    command: hostnamectl set-hostname ipa.eight.example.com
   - name: Configuring network
     shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.150/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
   - name: Reloading Network

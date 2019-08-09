@@ -9,6 +9,8 @@
       src: /usr/bin/python3.6
       path: /usr/bin/python
       state: link
+  - name: Setting Hostname
+    command: hostnamectl set-hostname system.eight.example.com
   - name: Configuring network
     command: nmcli con mod "System eth1" ipv4.addresses 192.168.55.151/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.method manual
   - name: Saving network config

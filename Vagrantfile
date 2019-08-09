@@ -13,7 +13,7 @@ config.vm.define "ipa" do |ipa|
   ipa.vm.provision :shell, :inline => "sudo mkdir -p /var/www/html/rpms; ", run: "always"
 #  ipa.vm.provision :shell, :inline => "for i in \"Workstation\" \"GNOME\" \"Basic Web Server\" \"Base\" \"nonmodular-appstream\" ; do sudo yum group install \"$i\" -y --skip-broken --downloadonly --destdir=/var/www/html/rpms;done;", run: "always"
   ipa.vm.synced_folder ".", "/vagrant"
-  ipa.vm.hostname = "ipa.eight.example.com"
+#  ipa.vm.hostname = "ipa.eight.example.com"
   ipa.vm.network "private_network", ip: "192.168.55.150"
   ipa.vm.provider :virtualbox do |ipa|
     ipa.customize ['modifyvm', :id,'--memory', '2048']
@@ -21,7 +21,7 @@ config.vm.define "ipa" do |ipa|
   ipa.vm.provision :shell, :inline => "pip3 install ansible", run: "always"
   ipa.vm.provision "ansible_local" do |ansible|
     ansible.install = false
-    ansible.playbook = "playbooks/ipa.yml"
+    ansible.playbook = "/vagrant/playbooks/ipa.yml"
 #    ansible.verbose = true
 
   end
@@ -29,7 +29,7 @@ end
   
 config.vm.define "system" do |system|
   system.vm.box = "generic/oracle8"
-  system.vm.hostname = "system.eight.example.com"
+#  system.vm.hostname = "system.eight.example.com"
   system.vm.network "private_network", ip: "192.168.55.151"
   system.vm.network "private_network", ip: "192.168.55.175"
   system.vm.network "private_network", ip: "192.168.55.176"
@@ -52,7 +52,7 @@ config.vm.define "system" do |system|
     SHELL
   system.vm.provision :shell, :inline => "pip3 install ansible", run: "always"
   system.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = 'playbooks/system.yml'
+    ansible.playbook = '/vagrant/playbooks/system.yml'
     ansible.install = false
 #    ansible.verbose = true
   system.vm.provision :shell, :inline => "reboot", run: "always"
