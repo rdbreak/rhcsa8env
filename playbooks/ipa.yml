@@ -56,19 +56,10 @@
     command: firewall-cmd --reload
   - name: Enabling IPV6
     shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
-  - name: Permissions Fixed. Configuring IPA server...(Est. Time - 7 minutes)
+  - name: Permissions Fixed.
     shell: chmod 644 /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py;chmod u+x /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py 
   - name: Setting SELinux To Permissive
     shell: setenforce 0
-#    async: 1500
-#    poll: 0
-#    register: ipa_config_sleeper
-#    ignore_errors: yes
-#  - name: Still Working On IPA Configuration...It takes time ¯\_(ツ)_/¯
-#    async_status: jid={{ ipa_config_sleeper.ansible_job_id }}
-#    register: job_result
-#    until: job_result.finished
-#    retries: 200
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh
