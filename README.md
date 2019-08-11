@@ -14,7 +14,6 @@ _Gatekeeper will block virtualbox from installing. All you have to do is go to S
 - [Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads) 
 - [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - `wget https://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_i686.rpm ; yum –y localinstall vagrant_2.2.5_x86_64.rpm` 
 - Ansible Guest Vagrant Plugin `vagrant plugin install vagrant-guest_ansible`
-_CentOS/RHEL 8.0_
 
 ###### Debian
 - Vagrant - `sudo apt install vagrant`
