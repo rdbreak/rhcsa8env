@@ -1,23 +1,27 @@
 # RHCSA 8 Study/Test Environment powered by Ansible and Vagrant. 
 
 ## Install the following software before setting up:
-###macOS
+###### macOS
+_Gatekeeper will block virtualbox from installing. All you have to do is go to Security & Provacy of System Preferences and click Allow under the General tab and rerun installation._
 - [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
     - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
 - [Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
 - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
-
-If you're using a Mac, Gatekeeper will block virtualbox from installing. All you have to do is go to System Preferences and click Allow under the General tab and rerun installation.
-
-###Linux/Windows
-- [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) (`wget -c https://releases.hashicorp.com/vagrant/2.0.3/vagrant_2.0.3_x86_64.deb ;sudo dpkg -i vagrant_2.0.3_x86_64.deb`)
-    - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
-- [Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads), (`sudo apt install vagrant`)
-
-### (Mac only) Install at once with the command below:
+###### Install at once with the command below (Mac only): 
 `brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack`
 
-Now you should be ready to follow the next steps and get the deployment up and running!
+###### CentOS/RHEL
+- [Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads) 
+- [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - `wget https://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_i686.rpm ; yum –y localinstall vagrant_2.2.5_x86_64.rpm` 
+- Ansible Guest Vagrant Plugin `vagrant plugin install vagrant-guest_ansible`
+_CentOS/RHEL 8.0_
+
+###### Debian
+- Vagrant - `sudo apt install vagrant`
+- Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
+- [Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
+
+_Now you should be ready to follow the next steps and get the deployment up and running!_
 
 ## Once the above software is installed. Do the following if you're running the environment on Mac/Linux:
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)

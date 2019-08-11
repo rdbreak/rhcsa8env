@@ -43,7 +43,7 @@
   - name: Downloading Repo Packages for System1
     shell: dnf group install "GNOME" "Basic Web Server" "Base" -y --downloadonly --destdir=/var/www/html/rpms
   - name: Downloading Additonal Packages
-    shell: dnf install -y @idm:DL1 --downloadonly --destdir=/var/www/html/rpms; dnf install vsftpd vdo stratis-cli createrepo pki-ca -y --downloadonly --destdir=/var/www/html/rpms
+    shell: dnf install vsftpd vdo stratis-cli createrepo pki-ca -y --downloadonly --destdir=/var/www/html/rpms
   - name: Configuring Repo For System
     shell: createrepo /var/www/html/rpms
   - name: Enabling services
