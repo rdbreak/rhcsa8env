@@ -2,7 +2,7 @@
 
 ## Install the following software before setting up:
 ###### macOS
-_Gatekeeper will block virtualbox from installing. All you have to do is go to Security & Provacy of System Preferences and click Allow under the General tab and rerun installation._
+_Gatekeeper will block virtualbox from installing. All you have to do is go to Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
 - [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
     - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
 - [Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
