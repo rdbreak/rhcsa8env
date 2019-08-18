@@ -44,7 +44,7 @@ _Now you should be ready to follow the next steps and get the deployment up and 
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Use your browser of choice and navigate to https://github.com/rdbreak/rhcsa8env, press the green “Clone or download” button then the “Download ZIP” button.
 3. Once downloaded, unzip the file and move it to the directory you created earlier, `~/bin` in the above example.
-3. Open CMD prompt and cd to the `~/bin/rhcsa8env` directory then run `vagrant up` to deploy the environment
+3. Open CMD prompt as Administrator and cd to the `~/bin/rhcsa8env` directory then run `vagrant up` to deploy the environment
 
 **Also, don't be spooked by any scary red font during the setup process. There are known issues that won't have a negative affect on the environment.**
 
