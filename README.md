@@ -74,7 +74,7 @@ You can also use the VirtualBox console to interact with the VMs or through a te
 - Gateway - 192.168.55.1
 - DNS - 8.8.8.8
 
-There is a repo available to use from `http://ipa.test.example.com/rpms`
+There is a repo available to use from `http://ipa.eight.example.com/rpms`
 
 ## Accessing the systems
 Remember to add the IP addresses to your local host file if you want to connect to the guest systems with the hostname.
