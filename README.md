@@ -38,7 +38,7 @@ sudo snap install ruby ; sudo apt install ruby-bundler git -y; wget -c https://r
 
 ## Windows 
 - [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
-    - Vagrant Plugin - `vagrant plugin install vagrant-guest-ansible`
+    - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
 - [Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 
 ##### Once the above software is installed. Do the following if you're running the environment on Windows:
