@@ -4,13 +4,21 @@ _Powered by Ansible and Vagrant_
 ## Installation options below:
 ## macOS
 _Gatekeeper will block virtualbox from installing. All you have to do is go to Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
+
 ##### Install all at once with the command below:
-`brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack`
+`brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible`
+
 ##### Alternatively, you can install everything individually below.
 - [Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
-    - Vagrant Plugin - `vagrant plugin install vagrant-guest-ansible`
+    - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
 - [Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
     - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
+
+## Once the above software is installed. Do the following if you're running the environment on Mac:
+1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
+2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhcsa8env.git`
+3. Change to the `rhcsa8env` directory that is now in your `~/bin` directory.
+4. Run `vagrant up` to deploy the environment 
 
 ## CentOS/RHEL 7 - Install all at once by Copy/Pasting the below command into your terminal as root.
 _NOTE - If it's been awhile since you've run yum update, do that first. Reboot if the kernel was updated._
@@ -30,7 +38,7 @@ sudo snap install ruby ; sudo apt install ruby-bundler git -y; wget -c https://r
 ##### Also, install the Virtualbox extension pack below
 - [Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 
-##### Once the above software is installed. Do the following if you're running the environment on Mac/Linux:
+## Once the above software is installed. Do the following if you're running the environment on Linux:
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhcsa8env.git`
 3. Change to the `rhcsa8env` directory that is now in your `~/bin` directory.
@@ -45,7 +53,7 @@ sudo snap install ruby ; sudo apt install ruby-bundler git -y; wget -c https://r
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Use your browser of choice and navigate to https://github.com/rdbreak/rhcsa8env, press the green “Clone or download” button then the “Download ZIP” button.
 3. Once downloaded, unzip the file and move it to the directory you created earlier, `~/bin` in the above example.
-3. Open CMD prompt as Administrator and cd to the `~/bin/rhcsa8env` directory then run `vagrant up` to deploy the environment
+3. Open PowerShell and cd to the `~/bin/rhcsa8env` directory then run `vagrant up` to deploy the environment
 
 **Also, don't be spooked by any scary red font during the setup process. There are known issues that won't have a negative affect on the environment.**
 

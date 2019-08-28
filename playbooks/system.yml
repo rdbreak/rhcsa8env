@@ -73,17 +73,6 @@
 #  - name: Rebooting machine
 #    reboot:
 #      reboot_timeout: 60
-  - name: Welcome to the RHCSA 8 Study/Test Environment!
-    debug:
-      msg:
-        - 'System 1 is currently rebooting, give it a couple seconds before accessing'
-        - 'Accessing The Systems:'
-        - '- IPA - 192.168.55.150'
-        - '- System 1 - 192.168.55.151'
-        - '- Username - vagrant'
-        - '- Password - vagrant'
-        - '- Access example - `ssh vagrant@192.168.55.151` or `vagrant ssh system`'
-        - '- Happy Studying!'
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh
