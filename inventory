@@ -1,6 +1,3 @@
-[all]
-ipa.eight.example.com ansible_host=192.168.55.150 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
-system1.eight.example.com ansible_host=192.168.55.151 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
 [ipa]
 ipa.eight.example.com ansible_host=192.168.55.150 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
 [system]

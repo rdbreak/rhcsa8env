@@ -43,7 +43,7 @@
   - name: Downloading Repo Packages for System1
     shell: dnf group install "GNOME" "Basic Web Server" "Base" -y --downloadonly --destdir=/var/www/html/rpms
   - name: Downloading Additonal Packages
-    shell: dnf install vsftpd vdo stratis-cli createrepo pki-ca -y --downloadonly --destdir=/var/www/html/rpms
+    shell: dnf install vsftpd vdo stratis-cli createrepo -y --downloadonly --destdir=/var/www/html/rpms
   - name: Configuring Repo For System
     shell: createrepo /var/www/html/rpms
   - name: Enabling services
@@ -56,8 +56,6 @@
     command: firewall-cmd --reload
   - name: Enabling IPV6
     shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
-  - name: Permissions Fixed.
-    shell: chmod 644 /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py;chmod u+x /usr/lib/python3.6/site-packages/urllib3/packages/ssl_match_hostname.py 
   - name: Setting SELinux To Permissive
     shell: setenforce 0
   - name: Creating Welcome Message
