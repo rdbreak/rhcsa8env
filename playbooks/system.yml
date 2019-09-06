@@ -59,20 +59,19 @@
     command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
   - name: Environment Packages Installed.
     shell: yum install -y man-pages
-  - name: Erasing Repos
-    shell: rm -rf /etc/yum.repos.d/*
   - name: Enabling services
     service: name=firewalld enabled=true
   - name: Starting services
     service: name=firewalld state=started
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
+    become: yes
   - name: Changing User Password
     shell: echo vagrant | sudo passwd vagrant --stdin
-    become: false
-#  - name: Rebooting machine
-#    reboot:
-#      reboot_timeout: 60
+    become: no
+  - name: Rebooting machine
+    reboot:
+      reboot_timeout: 120
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh
