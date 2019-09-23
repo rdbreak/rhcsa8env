@@ -26,9 +26,15 @@
     blockinfile:
       dest: /etc/yum.repos.d/ipa.repo
       block: |
-       [ipa]
-       name=ipa repo
-       baseurl=http://ipa.eight.example.com/rpms
+       [base]
+       name=Base
+       baseurl=http://repo/BaseOS
+       gpgcheck=0
+       enabled=1
+       
+       [apps]
+       name=Apps
+       baseurl=http://repo/AppStream
        gpgcheck=0
        enabled=1
     tags: repo
@@ -50,11 +56,15 @@
       path: /etc/hosts
       line: 192.168.55.150 ipa.eight.example.com ipa
       create: yes
-  - name: Adding system IP address to hosts file
+  - name: Adding system1 address to hosts file
     lineinfile:
       path: /etc/hosts
-      line: 192.168.55.151 system.eight.example.com system
+      line: 192.168.55.151 system1.eight.example.com system1
       create: yes
+  - name: Adding Repo address to hosts file
+    lineinfile:
+      path: /etc/hosts
+      line: 192.168.55.149 repo.eight.example.com repo
   - name: Enabling Authconfig. Installing Environment Packages...
     command: authconfig --update --enablesssd --enablesssdauth --enablemkhomedir
   - name: Environment Packages Installed.
@@ -100,9 +110,11 @@
          # You are logged into \"`hostname`\" as user \"`whoami`\"
          # This system is running `cat /etc/redhat-release`
          # kernel is `uname -r`
-         #
          # For root - use \`sudo\` or \`sudo su -\`
-         # Repo is available to use from http://ipa.eight.example.com/rpms
-         # here are also two additional NICs.
+         #
+         # Repo/AppStream 
+         # Available to use from http://repo.eight.example.com/BaseOS and http://repo.eight.example.com/AppStream
+         # 
+         # There are also two additional NICs.
          "
 ...
