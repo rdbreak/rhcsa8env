@@ -6,14 +6,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 config.ssh.insert_key = false
 config.vm.box_check_update = false
 config.vm.define "system" do |system|
-  system.vm.box = "generic/oracle8"
+  system.vm.box = "rdbreak/rhel8node"
 #  system.vm.hostname = "system.eight.example.com"
   system.vm.network "private_network", ip: "192.168.55.151"
   system.vm.network "private_network", ip: "192.168.55.175"
   system.vm.network "private_network", ip: "192.168.55.176"
-  system.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
-  system.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
-  system.vm.provision :shell, :inline => " python3 -m pip install -U pip ; python3 -m pip install pexpect; python3 -m pip install ansible", run: "always"
   system.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
   system.vm.provider "virtualbox" do |system|
     system.memory = "1024"
@@ -44,10 +41,7 @@ config.vm.define "repo" do |repo|
   end
 end
 config.vm.define "ipa" do |ipa|
-  ipa.vm.box = "generic/oracle8"
-  ipa.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
-  ipa.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
-  ipa.vm.provision :shell, :inline => " python3 -m pip install -U pip ; python3 -m pip install pexpect; python3 -m pip install ansible", run: "always"
+  ipa.vm.box = "rdbreak/rhel8node"
   ipa.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
 #  ipa.vm.hostname = "ipa.eight.example.com"
   ipa.vm.network "private_network", ip: "192.168.55.150"
