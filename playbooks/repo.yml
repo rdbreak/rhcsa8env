@@ -1,54 +1,39 @@
 ---
-- hosts: repo
+- name: Setting up Repo Server
+  hosts: repo
   strategy: free
-  become: true
+  ignore_errors: true
   gather_facts: false
   tasks:
   - name: Setting Hostname
-    command: hostnamectl set-hostname repo.eight.example.com
+    hostname: name=repo.eight.example.com
   - name: Configuring network
     shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.149/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.method manual
-  - name: Fixing hosts file
-    lineinfile:
+  - name: Building Host File
+    copy:
       dest: /etc/hosts
-      regexp: '^127\.0\.0\.1'
-      state: absent
-  - name: Adding localhost IPV4 address to host file
-    lineinfile:
-      path: /etc/hosts
-      line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-      create: yes
-  - name: Adding localhost IPV6 address to host file
-    lineinfile:
-      path: /etc/hosts
-      line: ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-      create: yes
-  - name: Adding IPA address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.150 ipa.eight.example.com ipa
-      create: yes
-  - name: Adding system1 address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.151 system1.eight.example.com system1
-      create: yes
-  - name: Adding Repo address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.149 repo.eight.example.com repo
-      create: yes
-  - name: Enabling services
-    shell: for i in httpd firewalld ; do systemctl enable $i;done
+      content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n:1         localhost localhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151 server2.eight.example.com server2"
+      force: yes
   - name: Starting services
-    shell: for i in httpd firewalld ; do systemctl start $i;done
-    ignore_errors: true
-  - name: Starting Firewalld
-    service: name=firewalld state=started
+    service:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+    with_items:
+      - firewalld
+      - httpd
   - name: Enabling Firewall Services
-    command: firewall-cmd --permanent --add-service=http --add-service=https --add-service=ntp --add-service=dns --add-service=kerberos --add-service=ldap --add-service=ldaps --add-service=ftp
-  - name: Reloading Firewall
-    command: firewall-cmd --reload
+    firewalld: 
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - http 
+      - https 
+      - ntp 
+      - dns
+      - ftp
   - name: Enabling IPV6
     shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
   - name: Creating Welcome Message
@@ -80,9 +65,8 @@
          # Why are you here? You should be working on the system hosts...
          # Anyway, try not to reboot me or bad stuff can happen.
          #
-         # You are logged into \"`hostname`\" as user \"`whoami`\"
+         # You are logged into \"`hostname`\" as the \"`whoami`\" account.
          # This system is running `cat /etc/redhat-release`
-         # kernel is `uname -r`
          #
          "
 ...

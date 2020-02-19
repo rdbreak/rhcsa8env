@@ -21,18 +21,21 @@ _Gatekeeper will block virtualbox from installing. All you have to do is go into
 3. Change to the `rhcsa8env` directory that is now in your `~/bin` directory.
 4. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
 
-## CentOS7/RHEL7/Manjaro/Arch - Install all at once by Copy/Pasting the below command into your terminal as root.
+## CentOS/RHEL/Manjaro/Arch - Install all at once by Copy/Pasting the below command into your terminal as root.
 _NOTE - If it's been awhile since you've run yum update, do that first. Reboot if the kernel was updated. There may be some dependencies errors but don't be alarmed as this won't stop the environment from working._
+
+_NOTE2 - If you receive an error for an ansible guest vagrant plugin, DO NOT worry, as there are two different plugins related to Ansible and only one needs to be installed_
 ```
-systemctl stop packagekit; yum install -y epel-release ; yum install -y git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel libguestfs-tools-c ; mkdir ~/Vagrant ; cd ~/Vagrant ; curl -o  vagrant_2.2.6_x86_64.rpm https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.rpm ; yum install -y vagrant_2.2.6_x86_64.rpm && vagrant plugin install vagrant-guest_ansible ; vagrant plugin install vagrant-guest-ansible ; wget -O /etc/yum.repos.d/virtualbox.repo wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo ; yum install -y VirtualBox-6.0 && systemctl start packagekit
+systemctl stop packagekit; yum install -y epel-release && yum install -y git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel libguestfs-tools-c ; mkdir ~/Vagrant ; cd ~/Vagrant ; curl -o  vagrant_2.2.6_x86_64.rpm https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.rpm && yum install -y vagrant_2.2.6_x86_64.rpm && vagrant plugin install vagrant-guest_ansible ; vagrant plugin install vagrant-guest-ansible ; wget -O /etc/yum.repos.d/virtualbox.repo wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo ; yum install -y VirtualBox-6.0 && systemctl start packagekit
 ```
 ##### Also, install the Virtualbox extension pack below
 - [Install the Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 
-## Windows/RHEL 8/Fedora 30
+## Windows/Fedora 30
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
 - [Install the Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- Then Install the Following Dependencies:
+- If on Windows, install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible` 
+- If on Linux, install the remaining dependencies:
 ```
 vagrant plugin install vagrant-guest_ansible ; sudo dnf install -y git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel 
 ```
@@ -76,15 +79,15 @@ You can also use the VirtualBox console to interact with the VMs or through a te
 
 ## Included systems:
 - repo.eight.example.com
-- ipa.eight.example.com
-- system1.eight.example.com
+- server1.eight.example.com
+- server2.eight.example.com
 
 ## System Details:
-> ipa
+> server1
 - 192.168.55.150
 - Gateway - 192.168.55.1
 - DNS - 8.8.8.8
-> system1
+> server2
 - 192.168.55.151
 - Gateway - 192.168.55.1
 - DNS - 8.8.8.8

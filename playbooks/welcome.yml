@@ -1,5 +1,6 @@
 ---
-- hosts: system
+- name: Creating Welcome Message
+  hosts: server2
   strategy: free
   gather_facts: False
   become: true
@@ -7,10 +8,10 @@
   - name: Welcome to the RHCSA 8 Study/Test Environment!
     debug:
       msg:
-        - 'System 1 is currently rebooting, give it a couple seconds before accessing'
+        - 'Server 2 is currently rebooting, give it a couple seconds before accessing'
         - 'Accessing The Systems:'
-        - '- IPA - 192.168.55.150'
-        - '- System 1 - 192.168.55.151'
+        - '- Server 1 - 192.168.55.150'
+        - '- Server 2 - 192.168.55.151'
         - '- Username - vagrant'
         - '- Password - vagrant'
         - ' ---------------------------------------------------------------------'

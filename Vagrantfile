@@ -5,28 +5,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Use same SSH key for each machine
 config.ssh.insert_key = false
 config.vm.box_check_update = false
-config.vm.define "system" do |system|
-  system.vm.box = "rdbreak/rhel8node"
-#  system.vm.hostname = "system.eight.example.com"
-  system.vm.network "private_network", ip: "192.168.55.151"
-  system.vm.network "private_network", ip: "192.168.55.175"
-  system.vm.network "private_network", ip: "192.168.55.176"
-  system.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
-  system.vm.provider "virtualbox" do |system|
-    system.memory = "1024"
+
+# System Configuration
+config.vm.define "server2" do |server2|
+  server2.vm.box = "rdbreak/rhel8node"
+#  server2.vm.hostname = "server2.eight.example.com"
+  server2.vm.network "private_network", ip: "192.168.55.151"
+  server2.vm.network "private_network", ip: "192.168.55.175"
+  server2.vm.network "private_network", ip: "192.168.55.176"
+  server2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  server2.vm.provider "virtualbox" do |server2|
+    server2.memory = "1024"
 
     if not File.exist?(file_to_disk1)
-      system.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 5 * 1024]
+      server2.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 8 * 1024]
     end
-    system.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
-    system.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk1]
+    server2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
+    server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk1]
   end
   
-    system.vm.provision "shell", inline: <<-SHELL
+    server2.vm.provision "shell", inline: <<-SHELL
     yes| sudo mkfs.ext4 /dev/sdb
     SHELL
-  system.vm.provision :shell, :inline => "reboot", run: "always"
+  server2.vm.provision :shell, :inline => "reboot", run: "always"
 end
+
+# Repo Configuration
 config.vm.define "repo" do |repo|
   repo.vm.box = "rdbreak/rhel8repo"
 #  repo.vm.hostname = "repo.example.com"
@@ -40,15 +44,17 @@ config.vm.define "repo" do |repo|
     repo.memory = "1024"
   end
 end
-config.vm.define "ipa" do |ipa|
-  ipa.vm.box = "rdbreak/rhel8node"
-  ipa.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
-#  ipa.vm.hostname = "ipa.eight.example.com"
-  ipa.vm.network "private_network", ip: "192.168.55.150"
-  ipa.vm.provider :virtualbox do |ipa|
-    ipa.customize ['modifyvm', :id,'--memory', '2048']
+
+# System Configuration
+config.vm.define "server1" do |server1|
+  server1.vm.box = "rdbreak/rhel8node"
+  server1.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+#  server1.vm.hostname = "server1.eight.example.com"
+  server1.vm.network "private_network", ip: "192.168.55.150"
+  server1.vm.provider :virtualbox do |server1|
+    server1.customize ['modifyvm', :id,'--memory', '2048']
     end
-  ipa.vm.provision :ansible_local do |ansible|
+  server1.vm.provision :ansible_local do |ansible|
     ansible.playbook = "/vagrant/playbooks/master.yml"
     ansible.install = false
     ansible.compatibility_mode = "2.0"

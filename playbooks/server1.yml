@@ -1,0 +1,93 @@
+---
+- name: Setting Up Server 1
+  hosts: server1
+  strategy: free
+  ignore_errors: true
+  gather_facts: false
+  tasks:
+  - name: Setting Up Python
+    file:
+      src: /usr/bin/python3.6
+      path: /usr/bin/python
+      state: link
+  - name: Setting Hostname
+    hostname: name=server1.eight.example.com
+  - name: Configuring network
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.150/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
+  - name: Reloading Network
+    service: 
+      name: NetworkManager
+      state: restarted 
+  - name: Building Host File
+    copy:
+      dest: /etc/hosts
+      content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n:1         localhost localhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151 server2.eight.example.com server2"
+      force: yes
+  - name: Erasing Repos
+    shell: rm -rf /etc/yum.repos.d/*
+  - name: Starting services
+    service:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+    with_items:
+      - firewalld
+      - httpd
+  - name: Enabling Firewall Services
+    firewalld: 
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - http 
+      - https 
+      - ntp 
+      - dns
+      - ftp
+  - name: Reloading Firewall
+    service: name=firewalld state=restarted
+  - name: Enabling IPV6
+    shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
+  - name: Changing User Password
+    shell: echo vagrant | sudo passwd vagrant --stdin
+    become: no
+  - name: Disabling SELinux then rebooting
+    selinux:
+      state: disabled
+  - name: Rebooting machine
+    reboot:
+      reboot_timeout: 120
+  - name: Creating Welcome Message
+    file:
+      path: /etc/profile.d/welcome.sh
+      state: touch
+      mode: 0755
+  - name: Building Welcome Message
+    blockinfile:
+      dest: /etc/profile.d/welcome.sh
+      block: |
+         #!/bin/bash
+         #
+         echo -e '
+         #          _     _        _        _         _           _          _   _        _              
+         #         / /\  /\ \     /\_\     / /\      /\ \        /\ \       /\_\/\_\ _   / /\            
+         #        / /  \ \ \ \   / / /    / /  \     \_\ \      /  \ \     / / / / //\_\/ /  \           
+         #       / / /\ \_\ \ \_/ / /    / / /\ \__  /\__ \    / /\ \ \   /\ \/ \ \/ / /_/ /\ \          
+         #      / / /\ \___\ \___/ /    / / /\ \___\/ /_ \ \  / / /\ \_\ /  \____\__/ /\_\/\ \ \         
+         #      \ \ \ \/___/\ \ \_/     \ \ \ \/___/ / /\ \ \/ /_/_ \/_// /\/________/      \ \ \        
+         #       \ \ \       \ \ \       \ \ \    / / /  \/_/ /____/\  / / /\/_// / /        \ \ \       
+         #   _    \ \ \       \ \ \  _    \ \ \  / / /     / /\____\/ / / /    / / /          \ \ \      
+         #  /_/\__/ / /        \ \ \/_/\__/ / / / / /     / / /______/ / /    / / /          __\ \ \___  
+         #  \ \/___/ /          \ \_\ \/___/ / /_/ /     / / /_______\/_/    / / /          /___\_\/__/\ 
+         #   \_____\/            \/_/\_____\/  \_\/      \/__________/       \/_/           \_________\/ 
+         #                                                                                               
+         '"#
+         # Why are you here? You should be working on the system hosts...
+         # Anyway, try not to reboot me or bad stuff can happen.
+         #
+         # You are logged into \"`hostname`\" as the \"`whoami`\" account.
+         # This system is running `cat /etc/redhat-release`
+         #
+         "
+...
