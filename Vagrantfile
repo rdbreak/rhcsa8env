@@ -54,6 +54,7 @@ config.vm.define "server1" do |server1|
   server1.vm.provider :virtualbox do |server1|
     server1.customize ['modifyvm', :id,'--memory', '2048']
     end
+
   server1.vm.provision :ansible_local do |ansible|
     ansible.playbook = "/vagrant/playbooks/master.yml"
     ansible.install = false

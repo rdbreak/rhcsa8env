@@ -53,12 +53,6 @@
   - name: Changing User Password
     shell: echo vagrant | sudo passwd vagrant --stdin
     become: no
-  - name: Disabling SELinux then rebooting
-    selinux:
-      state: disabled
-  - name: Rebooting machine
-    reboot:
-      reboot_timeout: 120
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh
@@ -96,4 +90,9 @@
          # 
          # There are also two additional NICs.
          "
+  - name: Disabling SELinux then rebooting
+    selinux:
+      state: disabled
+  - name: Rebooting machine
+    reboot:
 ...

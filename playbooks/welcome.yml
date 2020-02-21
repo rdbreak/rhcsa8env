@@ -8,12 +8,11 @@
   - name: Welcome to the RHCSA 8 Study/Test Environment!
     debug:
       msg:
-        - 'Server 2 is currently rebooting, give it a couple seconds before accessing'
         - 'Accessing The Systems:'
         - '- Server 1 - 192.168.55.150'
         - '- Server 2 - 192.168.55.151'
-        - '- Username - vagrant'
-        - '- Password - vagrant'
+        - '- Username/Password - "vagrant"'
+        - '- Two Additional interfaces and an addtional drive is on Server 2'
         - ' ---------------------------------------------------------------------'
         - '- Access example - `ssh vagrant@192.168.55.151` or `vagrant ssh system`'
         - '- Happy Studying!'
