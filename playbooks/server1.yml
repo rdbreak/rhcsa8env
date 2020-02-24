@@ -12,6 +12,8 @@
       state: link
   - name: Setting Hostname
     hostname: name=server1.eight.example.com
+  - name: Disabling SELinux then rebooting
+    selinux: state=disabled
   - name: Configuring network
     shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.150/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
   - name: Reloading Network
@@ -57,7 +59,7 @@
       path: /etc/profile.d/welcome.sh
       state: touch
       mode: 0755
-  - name: Building Welcome Message
+  - name: Building Welcome Message then rebooting
     blockinfile:
       dest: /etc/profile.d/welcome.sh
       block: |
@@ -77,16 +79,12 @@
          #   \_____\/            \/_/\_____\/  \_\/      \/__________/       \/_/           \_________\/ 
          #                                                                                               
          '"#
-         # Why are you here? You should be working on the system hosts...
-         # Anyway, try not to reboot me or bad stuff can happen.
-         #
          # You are logged into \"`hostname`\" as the \"`whoami`\" account.
          # This system is running `cat /etc/redhat-release`
          #
+         # For root - use \`sudo\` or \`sudo su -\`
+         #
+         # Repo/AppStream 
+         # Available to use from http://repo.eight.example.com/BaseOS 
+         # and http://repo.eight.example.com/AppStream
          "
-  - name: Disabling SELinux then rebooting
-    selinux:
-      state: disabled
-  - name: Rebooted machine
-    reboot:
-...

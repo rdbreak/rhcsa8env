@@ -1,6 +1,6 @@
 ---
 - name: Creating Welcome Message
-  hosts: server2
+  hosts: server1
   strategy: free
   gather_facts: False
   become: true
@@ -8,11 +8,14 @@
   - name: Welcome to the RHCSA 8 Study/Test Environment!
     debug:
       msg:
+        - 'Server 1 is rebooting, if you are unable to access right away, wait a'
+        - 'couple moments then try again.'
+        - '----------------------------------------------------------------------'
         - 'Accessing The Systems:'
         - '- Server 1 - 192.168.55.150'
         - '- Server 2 - 192.168.55.151'
         - '- Username/Password - "vagrant"'
         - '- Two Additional interfaces and an addtional drive is on Server 2'
         - ' ---------------------------------------------------------------------'
-        - '- Access example - `ssh vagrant@192.168.55.151` or `vagrant ssh system`'
+        - '- Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system`'
         - '- Happy Studying!'

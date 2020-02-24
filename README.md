@@ -99,7 +99,7 @@ Remember to add the IP addresses to your local host file if you want to connect 
 Username - vagrant
 Password - vagrant
 - For root - use `sudo` or `sudo su`
-Access example - `ssh vagrant@192.168.55.151` or `vagrant ssh system`
+Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system`
 
 ## Help
 If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join, please navigate to #practiceexam in the [Red Hat Certs Slack Workspace](https://join.slack.com/t/redhat-certs/shared_invite/enQtNjM4MTA3OTU1NDI0LTRkMzYxOGY3NjEwNTk4ZWQwMGMwMmMyNWYxMDRlZjg4NzgwMDdmZGU2OGNjMzMwNDQ1MTY1NmY1N2U3NTNlYWM).

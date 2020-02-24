@@ -6,7 +6,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 config.ssh.insert_key = false
 config.vm.box_check_update = false
 
-# System Configuration
+# Server 2 Configuration
 config.vm.define "server2" do |server2|
   server2.vm.box = "rdbreak/rhel8node"
 #  server2.vm.hostname = "server2.eight.example.com"
@@ -27,7 +27,15 @@ config.vm.define "server2" do |server2|
     server2.vm.provision "shell", inline: <<-SHELL
     yes| sudo mkfs.ext4 /dev/sdb
     SHELL
-  server2.vm.provision :shell, :inline => "reboot", run: "always"
+      server2.vm.provision :ansible_local do |ansible|
+     ansible.playbook = "/vagrant/playbooks/server2.yml"
+     ansible.install = false
+     ansible.compatibility_mode = "2.0"
+     ansible.inventory_path = "/vagrant/inventory"
+     ansible.config_file = "/vagrant/ansible.cfg"
+     ansible.limit = "all"
+    end
+    server2.vm.provision :shell, :inline => "reboot", run: "always"
 end
 
 # Repo Configuration
@@ -45,7 +53,7 @@ config.vm.define "repo" do |repo|
   end
 end
 
-# System Configuration
+# Server 1 Configuration
 config.vm.define "server1" do |server1|
   server1.vm.box = "rdbreak/rhel8node"
   server1.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
@@ -63,6 +71,7 @@ config.vm.define "server1" do |server1|
     ansible.config_file = "/vagrant/ansible.cfg"
     ansible.limit = "all"
    end
+   server1.vm.provision :shell, :inline => "reboot", run: "always"
 end
 end
 
