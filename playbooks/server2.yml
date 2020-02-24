@@ -12,8 +12,6 @@
       state: link
   - name: Setting Hostname
     hostname: name=server2.eight.example.com
-  - name: Disabling SELinux
-    selinux: state=disabled
   - name: Configuring network
     shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.151/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
   - name: Reloading Network
@@ -92,3 +90,6 @@
          # 
          # There are also two additional NICs.
          "
+  - name: Disabling Services and Rebooting
+    selinux:
+      state: disabled

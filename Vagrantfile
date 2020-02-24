@@ -17,11 +17,11 @@ config.vm.define "server2" do |server2|
   server2.vm.provider "virtualbox" do |server2|
     server2.memory = "1024"
 
-    if not File.exist?(file_to_disk1)
+    unless File.exist?(file_to_disk1)
       server2.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 8 * 1024]
-    end
-    server2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
-    server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk1]
+      server2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
+      server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk1]
+      end
   end
   
     server2.vm.provision "shell", inline: <<-SHELL

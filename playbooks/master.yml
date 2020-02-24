@@ -1,6 +1,5 @@
 ---
 - import_playbook: repo.yml
 - import_playbook: server1.yml
-#- import_playbook: server2.yml
 - import_playbook: welcome.yml
 ...
