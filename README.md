@@ -31,13 +31,14 @@ systemctl stop packagekit; yum install -y epel-release && yum install -y git bin
 ##### Also, install the Virtualbox extension pack below
 - [Install the Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 
-## Windows/Fedora 30
+## Windows/Fedora
+- If using Windows:
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
 - [Install the Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- If on Windows, install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible` 
-- If on Linux, install the remaining dependencies:
+- Then install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible` 
+- If using Fedora, run `dnf update -y` to update your system, then run the script below as root to install everything at once:
 ```
-vagrant plugin install vagrant-guest_ansible ; sudo dnf install -y git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel 
+dnf -y install wget git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel ; wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo ; mv virtualbox.repo /etc/yum.repos.d/virtualbox.repo ; dnf install -y VirtualBox-6.0 ; usermod -a -G vboxusers ${USER} ; /usr/lib/virtualbox/vboxdrv.sh setup ; dnf -y install vagrant ; dnf remove -y rubygem-fog-core ; vagrant plugin install vagrant-guest_ansible
 ```
 
 ##### Once the above software is installed. Do the following if you're running the environment on Windows:
