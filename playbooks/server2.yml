@@ -90,6 +90,6 @@
          # 
          # There are also two additional NICs.
          "
-  - name: Disabling Services and Rebooting
+  - name: Adjusting Services and Rebooting
     selinux:
-      state: disabled
+      state: permissive

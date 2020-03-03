@@ -86,6 +86,6 @@
          # Available to use from http://repo.eight.example.com/BaseOS 
          # and http://repo.eight.example.com/AppStream
          "
-  - name: Disabling Services and Rebooting
+  - name: Adjusting Services and Rebooting
     selinux:
-      state: disabled
+      state: permissive
