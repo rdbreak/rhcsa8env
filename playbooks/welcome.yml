@@ -16,7 +16,7 @@
         - ' Accessing The Systems:'
         - '- Server 1 - 192.168.55.150'
         - '- Server 2 - 192.168.55.151'
-        - '- Username/Password - "vagrant"'
+        - '- Username/Password - vagrant/vagrant or root/password'
         - '- Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system1`'
         - ' -----------------------------------------------------------------------'
         - '- Two Additional interfaces and an additional drive are on Server 2.'

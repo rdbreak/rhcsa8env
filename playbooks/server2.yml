@@ -52,7 +52,8 @@
     become: yes
   - name: Changing User Password
     shell: echo vagrant | sudo passwd vagrant --stdin
-    become: no
+  - name: Changing Root Password
+    shell: echo password | sudo passwd root --stdin
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh
@@ -93,3 +94,4 @@
   - name: Adjusting Services and Rebooting
     selinux:
       state: permissive
+      policy: targeted
