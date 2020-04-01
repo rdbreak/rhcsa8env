@@ -1,0 +1,315 @@
+---
+- name: Resetting Server 1
+  hosts: server1
+  strategy: free
+  ignore_errors: true
+  gather_facts: false
+  tasks:
+  - name: Setting Up Python
+    file:
+      src: /usr/bin/python3.6
+      path: /usr/bin/python
+      state: link
+  - name: Setting Hostname
+    hostname: name=server1.eight.example.com
+  - name: Configuring network
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.150/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
+  - name: Reloading Network
+    service: 
+      name: NetworkManager
+      state: restarted 
+  - name: Building Host File
+    copy:
+      dest: /etc/hosts
+      content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n:1         localhost localhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151 server2.eight.example.com server2"
+      force: yes
+  - name: Removing Routing 
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: '0'
+      sysctl_set: yes
+  - name: Resetting Timezone
+    timezone:
+      name: America/Los_Angeles
+  - name: Erasing Repos
+    file:
+      path: /etc/yum.repos.d/*
+      state: absent
+  - name: Erasing Web Server Configuration
+    file:
+      path: /var/www/html/*
+      state: absent
+  - name: Erasing Shell Script (if present)
+    file:
+      path: /awesome.sh
+      state: absent
+  - name: Removing users
+    user:
+      name: "{{ item }}"
+      state: absent
+      remove: yes
+    with_items:
+      - phil
+      - laura
+      - stewart
+      - kevin
+  - name: Removing Added Directories
+    file:
+      path: /"{{ item }}"
+      state: absent
+    with_items:
+      - accounting
+      - marketing
+  - name: Removing Temporary Files
+    file:
+      path: /"{{ item }}"
+      state: absent
+    with_items:
+      - tmp
+      - find
+  - name: Adjusting Grub File
+    lineinfile:
+      state: present
+      dest: /etc/default/grub
+      insertafter: 'true'
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* audit)\"[^\"]+)(\".*)'
+      line: 'GRUB_CMDLINE_LINUX="no_timer_check crashkernel=auto resume=/dev/mapper/rhel_rhel8-swap rd.lvm.lv=rhel_rhel8/root rd.lvm.lv=rhel_rhel8/swap biosdevname=0 net.ifnames=0 rhgb quiet"'
+  - name: Starting services
+    service:
+      name: "{{ item }}"
+      state: restarted
+      enabled: yes
+    with_items:
+      - firewalld
+      - httpd
+  - name: Enabling Firewall Services
+    firewalld: 
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - http 
+      - https 
+      - ntp 
+      - dns
+      - ftp
+  - name: Reloading Firewall
+    service: name=firewalld state=restarted
+  - name: Enabling IPV6
+    shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
+  - name: Changing User Password
+    shell: echo vagrant | sudo passwd vagrant --stdin
+  - name: Changing Root Password
+    shell: echo password | sudo passwd root --stdin
+  - name: Creating Welcome Message
+    file:
+      path: /etc/profile.d/welcome.sh
+      state: touch
+      mode: 0755
+  - name: Building Welcome Message then rebooting
+    blockinfile:
+      dest: /etc/profile.d/welcome.sh
+      block: |
+         #!/bin/bash
+         #
+         echo -e '
+         #          _     _        _        _         _           _          _   _        _              
+         #         / /\  /\ \     /\_\     / /\      /\ \        /\ \       /\_\/\_\ _   / /\            
+         #        / /  \ \ \ \   / / /    / /  \     \_\ \      /  \ \     / / / / //\_\/ /  \           
+         #       / / /\ \_\ \ \_/ / /    / / /\ \__  /\__ \    / /\ \ \   /\ \/ \ \/ / /_/ /\ \          
+         #      / / /\ \___\ \___/ /    / / /\ \___\/ /_ \ \  / / /\ \_\ /  \____\__/ /\_\/\ \ \         
+         #      \ \ \ \/___/\ \ \_/     \ \ \ \/___/ / /\ \ \/ /_/_ \/_// /\/________/      \ \ \        
+         #       \ \ \       \ \ \       \ \ \    / / /  \/_/ /____/\  / / /\/_// / /        \ \ \       
+         #   _    \ \ \       \ \ \  _    \ \ \  / / /     / /\____\/ / / /    / / /          \ \ \      
+         #  /_/\__/ / /        \ \ \/_/\__/ / / / / /     / / /______/ / /    / / /          __\ \ \___  
+         #  \ \/___/ /          \ \_\ \/___/ / /_/ /     / / /_______\/_/    / / /          /___\_\/__/\ 
+         #   \_____\/            \/_/\_____\/  \_\/      \/__________/       \/_/           \_________\/ 
+         #                                                                                               
+         '"#
+         # You are logged into \"`hostname`\" as the \"`whoami`\" account.
+         # This system is running `cat /etc/redhat-release`
+         #
+         # For root - use \`sudo\` or \`sudo su -\`
+         #
+         # Repo/AppStream 
+         # Available to use from http://repo.eight.example.com/BaseOS 
+         # and http://repo.eight.example.com/AppStream
+         "
+  - name: Adjusting Services and Rebooting
+    selinux:
+      state: permissive
+      policy: targeted
+  - name: Rebooting Host
+    reboot:
+# ----------------------------------------------------------------------
+- name: Resetting Server 2 
+  hosts: server2
+  strategy: free
+  gather_facts: False
+  ignore_errors: true
+  tasks:
+  - name: Setting Up Python
+    file:
+      src: /usr/bin/python3.6
+      path: /usr/bin/python
+      state: link
+  - name: Setting Hostname
+    hostname: name=server2.eight.example.com
+  - name: Configuring network
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.151/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
+  - name: Reloading Network
+    service: 
+      name: NetworkManager
+      state: restarted 
+  - name: Building Host File
+    copy:
+      dest: /etc/hosts
+      content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n:1            localhostlocalhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151  server2.eight.example.com server2"
+      force: yes
+  - name: Removing Routing 
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: '0'
+      sysctl_set: yes
+  - name: Resetting Timezone
+    timezone:
+      name: America/Los_Angeles
+  - name: Erasing Web Server Configuration
+    file:
+      path: /var/www/html/*
+      state: absent
+  - name: Erasing Shell Script (if present)
+    file:
+      path: /awesome.sh
+      state: absent
+  - name: Removing users
+    user:
+      name: "{{ item }}"
+      state: absent
+      remove: yes
+    with_items:
+      - phil
+      - laura
+      - stewart
+      - kevin
+  - name: Removing Added Directories
+    file:
+      path: /"{{ item }}"
+      state: absent
+    with_items:
+      - accounting
+      - marketing
+  - name: Removing Temporary Files
+    file:
+      path: /"{{ item }}"
+      state: absent
+    with_items:
+      - tmp
+      - find
+  - name: Adjusting Grub File
+    lineinfile:
+      state: present
+      dest: /etc/default/grub
+      insertafter: 'true'
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* audit)\"[^\"]+)(\".*)'
+      line: 'GRUB_CMDLINE_LINUX="no_timer_check crashkernel=auto resume=/dev/mapper/rhel_rhel8-swap rd.lvm.lv=rhel_rhel8/root rd.lvm.lv=rhel_rhel8/swap biosdevname=0 net.ifnames=0 rhgb quiet"'
+  - name: Reading Partition Information
+    parted: device=/dev/sdb unit=MiB
+    register: sdb_info
+  - name: Removing all partitions from additional disk
+    parted:
+      device: /dev/sdb
+      number: '{{ item.num }}'
+      state: absent
+    loop: '{{ sdb_info.partitions }}'
+  - name: Creating Temporary Repo File
+    file:
+      path: /etc/yum.repos.d/rpms.repo
+      state: touch
+      mode: 0755
+  - name: Building Repo File
+    copy:
+      dest: /etc/yum.repos.d/rpms.repo
+      content: "[base]\nname=Base\nbaseurl=http://repo/BaseOS\ngpgcheck=0\nenabled=1\n\n[apps]\nname=Apps\nbaseurl=http://repo/AppStream\ngpgcheck=0\nenabled=1"
+      force: yes
+  - name: Environment Packages Installed.
+    yum: 
+      name: man-pages
+      state: present
+  - name: Starting services
+    service:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+    with_items:
+      - firewalld
+      - httpd
+  - name: Erasing Repos
+    file:
+      path: /etc/yum.repos.d/*
+      state: absent
+    become: yes
+  - name: Changing User Password
+    shell: echo vagrant | sudo passwd vagrant --stdin
+  - name: Changing Root Password
+    shell: echo password | sudo passwd root --stdin
+  - name: Creating Welcome Message
+    file:
+      path: /etc/profile.d/welcome.sh
+      state: touch
+      mode: 0755
+  - name: Building Welcome Message then rebooting
+    blockinfile:
+      dest: /etc/profile.d/welcome.sh
+      mode: 0644
+      block: |
+         #!/bin/bash
+         #
+         echo -e '
+         #          _     _        _        _         _           _          _   _         _       
+         #         / /\  /\ \     /\_\     / /\      /\ \        /\ \       /\_\/\_\ _   /\ \      
+         #        / /  \ \ \ \   / / /    / /  \     \_\ \      /  \ \     / / / / //\_\/  \ \     
+         #       / / /\ \_\ \ \_/ / /    / / /\ \__  /\__ \    / /\ \ \   /\ \/ \ \/ / / /\ \ \    
+         #      / / /\ \___\ \___/ /    / / /\ \___\/ /_ \ \  / / /\ \_\ /  \____\__/ /\/_/\ \ \   
+         #      \ \ \ \/___/\ \ \_/     \ \ \ \/___/ / /\ \ \/ /_/_ \/_// /\/________/     / / /   
+         #       \ \ \       \ \ \       \ \ \    / / /  \/_/ /____/\  / / /\/_// / /     / / /    
+         #   _    \ \ \       \ \ \  _    \ \ \  / / /     / /\____\/ / / /    / / /     / / /  _  
+         #  /_/\__/ / /        \ \ \/_/\__/ / / / / /     / / /______/ / /    / / /     / / /_/\_\ 
+         #  \ \/___/ /          \ \_\ \/___/ / /_/ /     / / /_______\/_/    / / /     / /_____/ / 
+         #   \_____\/            \/_/\_____\/  \_\/      \/__________/       \/_/      \________/  
+         #                                                                                         
+         '"#
+         # You are logged into \"`hostname`\" as the \"`whoami`\" account.
+         # This system is running `cat /etc/redhat-release`
+         #
+         # For root - use \`sudo\` or \`sudo su -\`
+         #
+         # Repo/AppStream 
+         # Available to use from http://repo.eight.example.com/BaseOS 
+         # and http://repo.eight.example.com/AppStream
+         # 
+         # There are also two additional NICs.
+         "
+  - name: Adjusting Services and Rebooting
+    selinux:
+      state: permissive
+      policy: targeted
+  - name: Rebooting Server 2
+    reboot:
+  - name: Environment Reset Complete
+    debug:
+      msg:
+        - ' Server 1 and Server 2 have been reset successfully!'
+        - '------------------------------------------------------------------------'
+        - ' Server 2 is rebooting.  If you are unable to access it right away,'
+        - ' wait a couple moments, then try again.'
+        - '------------------------------------------------------------------------'
+        - ' Accessing The Systems:'
+        - '- Server 1 - 192.168.55.150'
+        - '- Server 2 - 192.168.55.151'
+        - '- Username/Password - vagrant/vagrant or root/password'
+        - '- Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system1`'
+        - ' -----------------------------------------------------------------------'
+        - '- Two Additional interfaces and an additional drive are on Server 2.'
+        - '- Happy Studying!'

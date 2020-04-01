@@ -24,7 +24,10 @@
       content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n:1         localhost localhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151 server2.eight.example.com server2"
       force: yes
   - name: Erasing Repos
-    shell: rm -rf /etc/yum.repos.d/*
+    file:
+      path: /etc/yum.repos.d/*
+      state: absent
+    become: yes
   - name: Starting services
     service:
       name: "{{ item }}"

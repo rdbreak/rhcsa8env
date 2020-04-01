@@ -36,7 +36,7 @@ systemctl stop packagekit; dnf -y install https://dl.fedoraproject.org/pub/epel/
 ##### Also, install the Virtualbox extension pack below
 - [Install the Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 
-##### Once the above software is installed. Do the following if you're running the environment on Mac:
+##### Once the above software is installed. Do the following if you're running the environment on Linux:
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhcsa8env.git`
 3. Change to the `rhcsa8env` directory that is now in your `~/bin` directory.
@@ -86,7 +86,8 @@ _NOTE this requires a free Github account_
 3. Click "Clone a repository from the Internet" and enter "rdbreak/rhcsa8env" and choose a location then "Clone".
 4. You are also able to easily pull changes when they're made available.
 
-## Notable Vagrant Commands to control the environment:
+## Notable commands to control the environment:
+- `ansible-playbook playbooks/reset.yml` - Used for resetting Servers 1 and 2 after attempting the practice exam in the Red Hat Certs Slack workspace practice exam channel. 
 - `vagrant up` - Boots and provisions the environment
 - `vagrant destroy -f` - Shuts down and destroys the environment
 - `vagrant halt` - Only shuts down the environment VMs (can be booted up with `vagrant up`)
@@ -121,7 +122,7 @@ Password - vagrant
 Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system`
 
 ## Help
-If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join, please navigate to #practiceexam in the [Red Hat Certs Slack Workspace](https://join.slack.com/t/redhat-certs/shared_invite/enQtNjM4MTA3OTU1NDI0LTRkMzYxOGY3NjEwNTk4ZWQwMGMwMmMyNWYxMDRlZjg4NzgwMDdmZGU2OGNjMzMwNDQ1MTY1NmY1N2U3NTNlYWM).
+If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join to get your questions answered, check out the Red Hat Certs Slack Workspace. You can find the invite link at the top of this page next to the description.
 
 ## Known Issues:
 
