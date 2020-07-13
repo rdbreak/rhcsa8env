@@ -51,7 +51,13 @@
   - name: Reloading Firewall
     service: name=firewalld state=restarted
   - name: Enabling IPV6
-    shell: sysctl net.ipv6.conf.lo.disable_ipv6=0 ; sysctl net.ipv6.conf.all.disable_ipv6=0
+    sysctl:
+      name: "{{ item }}"
+      value: '0'
+      sysctl_set: yes
+    with_items:
+      - net.ipv6.conf.lo.disable_ipv6
+      - net.ipv6.conf.all.disable_ipv6
   - name: Changing User Password
     shell: echo vagrant | sudo passwd vagrant --stdin
   - name: Changing Root Password

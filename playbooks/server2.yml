@@ -89,7 +89,7 @@
          # Available to use from http://repo.eight.example.com/BaseOS 
          # and http://repo.eight.example.com/AppStream
          # 
-         # There are also two additional NICs.
+         # There are also two additional NICs and drives.
          "
   - name: Adjusting Services and Rebooting
     selinux:
