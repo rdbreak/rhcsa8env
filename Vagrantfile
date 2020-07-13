@@ -26,8 +26,7 @@ config.vm.define "server2" do |server2|
         server2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 5 * 1024]
       end
 
-      
-      server2.memory = "1024"
+      server2.memory = "2048"
       server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk1]
       server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', file_to_disk2]
     end
