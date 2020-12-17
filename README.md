@@ -25,10 +25,25 @@ _Gatekeeper will block virtualbox from installing. All you have to do is go into
 _NOTE - If it's been awhile since you've run yum update, do that first. Reboot if the kernel was updated. There may be some dependencies errors but don't be alarmed as this won't stop the environment from working._
 
 _NOTE2 - If you receive an error for an ansible guest vagrant plugin, DO NOT worry, as there are two different plugins related to Ansible and only one needs to be installed._
-##### For CentoOS/RHEL7/Manjaro/Arch (Continue below for RHEL 8 specific script)
+##### For CentoOS/RHEL7 (Continue below for RHEL 8 specific script)
 ```
 systemctl stop packagekit; yum install -y epel-release && yum install -y git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel libguestfs-tools-c ; mkdir ~/Vagrant ; cd ~/Vagrant ; curl -o  vagrant_2.2.6_x86_64.rpm https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.rpm && yum install -y vagrant_2.2.6_x86_64.rpm && vagrant plugin install vagrant-guest_ansible ; vagrant plugin install vagrant-guest-ansible ; wget -O /etc/yum.repos.d/virtualbox.repo wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo ; yum install -y VirtualBox-6.0 && systemctl start packagekit
 ```
+##### For Manjaro/Arch (Continue below for RHEL 8 specific script)
+
+You can use either the one liner code, or the [`installer_arch.sh`](installer_arch.sh) script. 
+
+Notes about the script:
++ It will only install what's missing (`--needed`)
++ It will select the default option for all the installs (`--noconfirm`)
++ It will clone this repository to `~/Downloads/`
++ It will prompt you to start building the environment (`vagrant up`)
+
+One liner:
+```
+ sudo /usr/bin/pacman -Sy ; sudo /usr/bin/pacman -S --needed base-devel ; sudo /usr/bin/pacman -S --needed ansible virtualbox virtualbox-host-modules-arch virtualbox-guest-iso vagrant libvirt
+```
+
 ##### If you're using RHEL 8, use the script below:
 ```
 systemctl stop packagekit; dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm ; dnf install -y git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel libguestfs-tools-c ; mkdir ~/Vagrant ; cd ~/Vagrant ; curl -o  vagrant_2.2.6_x86_64.rpm https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.rpm && dnf install -y vagrant_2.2.6_x86_64.rpm && vagrant plugin install vagrant-guest_ansible ; wget -O /etc/yum.repos.d/virtualbox.repo wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo ; dnf install -y VirtualBox-6.0 && /usr/lib/virtualbox/vboxdrv.sh setup ; usermod -a -G vboxusers root ; systemctl start packagekit
