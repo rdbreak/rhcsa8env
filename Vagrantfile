@@ -16,20 +16,20 @@ config.vm.define "server2" do |server2|
   server2.vm.network "private_network", ip: "192.168.55.176"
   server2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
   server2.vm.provider "virtualbox" do |server2|
-    server2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
 
     unless File.exist?(file_to_disk1)
-        server2.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 8 * 1024]
-      end
-
-      unless File.exist?(file_to_disk2)
-        server2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 8 * 1024]
-      end
-
-      server2.memory = "2048"
+      server2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
+      server2.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 8 * 1024]
       server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk1]
+    end
+
+    unless File.exist?(file_to_disk2)
+      server2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 8 * 1024]
       server2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', file_to_disk2]
     end
+
+      server2.memory = "2048"
+  end
   
 
     server2.vm.provision "shell", inline: <<-SHELL
@@ -45,13 +45,13 @@ config.vm.define "server2" do |server2|
     mkdir /extradisk2 ; echo \'LABEL=extradisk2 /extradisk2 ext4 defaults 0 0\' >> /etc/fstab
     SHELL
 
-      server2.vm.provision :ansible_local do |ansible|
-     ansible.playbook = "/vagrant/playbooks/server2.yml"
-     ansible.install = false
-     ansible.compatibility_mode = "2.0"
-     ansible.inventory_path = "/vagrant/inventory"
-     ansible.config_file = "/vagrant/ansible.cfg"
-     ansible.limit = "all"
+    server2.vm.provision :ansible_local do |ansible|
+      ansible.playbook = "/vagrant/playbooks/server2.yml"
+      ansible.install = false
+      ansible.compatibility_mode = "2.0"
+      ansible.inventory_path = "/vagrant/inventory"
+      ansible.config_file = "/vagrant/ansible.cfg"
+      ansible.limit = "all"
     end
     server2.vm.provision :shell, :inline => "reboot", run: "always"
 end
