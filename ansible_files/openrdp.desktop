@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=TerminalURL
+Exec=/usr/local/bin/open_rdp.sh %u
+Type=Application
+NoDisplay=true
+Categories=System;
+MimeType=x-scheme-handler/rdp;

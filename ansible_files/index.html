@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+   <head>
+      <title>RHCSA Exam Simulation</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <style type="text/css">
+         /*<![CDATA[*/
+            body {
+            	background-color: #fff;
+            	color: #000;
+            	font-size: 0.9em;
+            	font-family: sans-serif,helvetica;
+            	margin: 0;
+            	padding: 0;
+            }
+            :link {
+            	color: #c00;
+            }
+            :visited {
+            	color: #c00;
+            }
+            a:hover {
+            	color: #f50;
+            }
+            h1 {
+            	text-align: center;
+            	margin: 0;
+            	padding: 0.6em 2em 0.4em;
+            	background-color: #900;
+            	color: #fff;
+            	font-weight: normal;
+            	font-size: 1.75em;
+            	border-bottom: 2px solid #000;
+            }
+            h1 strong {
+            	font-weight: bold;
+            }
+            h2 {
+            	font-size: 1.1em;
+            	font-weight: bold;
+            }
+            hr {
+            	display: none;
+            }
+            .content {
+            	padding: 1em 5em;
+            }
+            .content-columns {
+            	/* Setting relative positioning allows for 
+            	absolute positioning for sub-classes */
+            	position: relative;
+            	padding-top: 1em;
+            }
+            .content-column-left {
+            	/* Value for IE/Win; will be overwritten for other browsers */
+            	width: 47%;
+            	padding-right: 3%;
+            	float: left;
+            	padding-bottom: 2em;
+            }
+            .content-column-left hr {
+            	display: none;
+            }
+            .content-column-right {
+            	/* Values for IE/Win; will be overwritten for other browsers */
+            	width: 47%;
+            	padding-left: 3%;
+            	float: left;
+            	padding-bottom: 2em;
+            }
+            .content-columns>.content-column-left, .content-columns>.content-column-right {
+            	/* Non-IE/Win */
+            }
+            img {
+            	border: 2px solid #fff;
+            	padding: 2px;
+            	margin: 2px;
+            }
+            a:hover img {
+            	border: 2px solid #f50;
+            }
+            /*]]>*/
+      </style>
+   </head>
+   <body>
+      <h1><strong>Red Hat Enterprise Linux</strong><br>
+         RHCSA Exam Simulation
+      </h1>
+      <div class="content">
+         <div class="content-middle">
+            <p>Here you will find the instructions for the simulated exam for RHCSA. Use the environment information on the right to connect to the VMs. On the left you will find the instruction for the tasks that you should complete.</p>
+         </div>
+         <hr />
+         <div class="content-columns">
+            <div class="content-column-left">
+               <h2>Server 1</h2>
+               <table style="width:100%">
+                  <tr>
+                     <td>
+                        <h5>Review</h5>
+                     </td>
+                     <td>
+                        <h5>Done </h5>
+                     </td>
+                     <td>
+                        <h5>Task</h5>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-1" ></td>
+                     <td><input type="radio" name="item-1" ></td>
+                     <td>
+                        1- The system time should be set to your (or nearest to you) timezone and ensure NTP sync is configured. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2" ></td>
+                     <td><input type="radio" name="item-2" ></td>
+                     <td>
+                        2- Enable packet forwarding. This should persist after reboot. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-3" ></td>
+                     <td><input type="radio" name="item-3" ></td>
+                     <td>
+                        3- Find all files that are larger than 5MB in the /etc directory and copy them to /find/largefiles. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-4" ></td>
+                     <td><input type="radio" name="item-4" ></td>
+                     <td>
+                        4- System1 should boot into the multiuser target by default and boot messages should be present (not silenced). 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-5" ></td>
+                     <td><input type="radio" name="item-5" ></td>
+                     <td>
+                        5- Configure a basic web server that displays “Welcome to the web server” once connected to it. Ensure the firewall allows the http/https services. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-6" ></td>
+                     <td><input type="radio" name="item-6" ></td>
+                     <td>
+                        6- Write a script named awesome.sh in the root directory on system1. <br>
+                        - If “me” is given as an argument, then the script should output “Yes, I’m awesome.” <br>
+                        - If “them” is given as an argument, then the script should output “Okay, they are awesome.” <br>
+                        - If the argument is empty or anything else is given, the script should output “Usage ./awesome.sh me|them” 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-7" ></td>
+                     <td><input type="radio" name="item-7" ></td>
+                     <td>
+                        7- Create a cron job that writes “This practice exam was easy and I’m ready to ace my RHCSA” to /var/log/messages at 12pm only on weekdays. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-8" ></td>
+                     <td><input type="radio" name="item-8" ></td>
+                     <td>
+                        8- Create a httpd podman container that starts automaticall with the system, that is owned by the user 'contuser' and uses port '8080' on the host. Use the image 'docker.io/library/httpd'. If any dependencies are needed either install or configure them. 
+                        <p> 
+                     </td>
+                  </tr>
+
+               </table>
+               <h2>Server 2</h2>
+               <table>
+                  <tr>
+                     <td>
+                        <h5>Review</h5>
+                     </td>
+                     <td>
+                        <h5>Done </h5>
+                     </td>
+                     <td>
+                        <h5>Task</h5>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-1" ></td>
+                     <td><input type="radio" name="item-2-1" ></td>
+                     <td>
+                        1- Interrupt the boot process and reset the root password. Change it to “wander” to gain access to the system. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-2" ></td>
+                     <td><input type="radio" name="item-2-2" ></td>
+                     <td>
+                        2- Add the following secondary IP addresses statically to your current running interface. Do this in a way that doesn’t compromise your existing settings:<br>
+                        IPV4 - 10.0.0.5/24<br>
+                        IPV6 - fd01::100/64 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-3" ></td>
+                     <td><input type="radio" name="item-2-3" ></td>
+                     <td>
+                        3- Create a new 2GB volume group named “vgprac”. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-4" ></td>
+                     <td><input type="radio" name="item-2-4" ></td>
+                     <td>
+                        4- Create a 500MB logical volume named “lvprac” inside the “vgprac” volume group. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-5" ></td>
+                     <td><input type="radio" name="item-2-5" ></td>
+                     <td>
+                        5- The “lvprac” logical volume should be formatted with the xfs filesystem and mount persistently on the /mnt/lvprac directory. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-6" ></td>
+                     <td><input type="radio" name="item-2-6" ></td>
+                     <td>
+                        6- Extend the xfs filesystem on “lvprac” by 500MB. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-7" ></td>
+                     <td><input type="radio" name="item-2-7" ></td>
+                     <td>
+                        7- Use the appropriate utility to create a 5TiB thin provisioned volume. 
+                        <p> 
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input type="radio" name="item-2-8" ></td>
+                     <td><input type="radio" name="item-2-8" ></td>
+                     <td>
+                        8- Create users phil, laura, stewart, and kevin. <br>
+                        - All new users should have a file named “Welcome” in their home folder after account creation. <br>
+                        - All user passwords should expire after 60 days and be atleast 8 characters in length. <br>
+                        - phil and laura should be part of the “accounting” group. If the group doesn’t already exist, create it. <br>
+                        - stewart and kevin should be part of the “marketing” group. If the group doesn’t already exist, create it. <br>
+                        - Only members of the accounting group should have access to the “/accounting” directory. Make laura the owner of this directory. Make the accounting group the group - owner of the “/accounting” directory. <br>
+                        - Only members of the marketing group should have access to the “/marketing” directory. Make stewart the owner of this directory. Make the marketing group the group owner of the “/marketing” directory. <br>
+                        - New files should be owned by the group owner and only the file creator should have the permissions to delete their own files. 
+                        <p> 
+                     </td>
+                  </tr>
+               </table>
+               <hr />
+            </div>
+            <div class="content-column-right" max-width= "100px">
+               <p>
+               <h2>Environment Information</h2>
+               <strong>Servers</strong> 
+               <p>
+                  - workstation.eight.example.com (this machine) - 192.168.55.148 <br>
+                  - Server 1 - 192.168.55.150  <button type="button" onclick="location.href='rdp://33390';">Launch</button> <br>
+                  - Server 2 - 192.168.55.151  <button type="button" onclick="location.href='rdp://33389';">Launch</button>
+               <p>
+                  <strong>Credentials</strong> 
+               <p>
+                  U: vagrant <br>
+                  P: vagrant 
+               <p>
+                  U: root <br>
+                  P: password
+               </p>
+               <strong>Repo</strong> 
+               <p>
+                  Repos are available at: 
+               <p>
+                  http://repo.eight.example.com/BaseOS <br>
+                  http://repo.eight.example.com/AppStream 
+               <p>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>

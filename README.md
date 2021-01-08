@@ -1,5 +1,5 @@
 # RHCSA 8 Automated Practice Deployment
-_Powered by Ansible and Vagrant_ 
+_Powered by Ansible and Vagrant_
 
 ## Installation options below:
 ## macOS
@@ -31,7 +31,7 @@ systemctl stop packagekit; yum install -y epel-release && yum install -y git bin
 ```
 ##### For Manjaro/Arch (Continue below for RHEL 8 specific script)
 
-You can use either the one liner code, or the [`installer_arch.sh`](installer_arch.sh) script. 
+You can use either the one liner code, or the [`installer_arch.sh`](installer_arch.sh) script.
 
 Notes about the script:
 + It will only install what's missing (`--needed`)
@@ -61,7 +61,7 @@ systemctl stop packagekit; dnf -y install https://dl.fedoraproject.org/pub/epel/
 - If using Windows:
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
 - [Install the Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- Then install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible` 
+- Then install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible`
 - If using Fedora, run `dnf update -y` to update your system, then run the script below as root to install everything at once:
 ```
 dnf -y install wget git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel ; wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo ; mv virtualbox.repo /etc/yum.repos.d/virtualbox.repo ; dnf install -y VirtualBox-6.0 ; usermod -a -G vboxusers ${USER} ; /usr/lib/virtualbox/vboxdrv.sh setup ; dnf -y install vagrant ; dnf remove -y rubygem-fog-core ; vagrant plugin install vagrant-guest_ansible
@@ -102,7 +102,7 @@ _NOTE this requires a free Github account_
 4. You are also able to easily pull changes when they're made available.
 
 ## Notable commands to control the environment:
-- `ansible-playbook playbooks/reset.yml` - Used for resetting Servers 1 and 2 after attempting the practice exam in the Red Hat Certs Slack workspace practice exam channel. 
+- `ansible-playbook playbooks/reset.yml` - Used for resetting Servers 1 and 2 after attempting the practice exam in the Red Hat Certs Slack workspace practice exam channel.
 - `vagrant up` - Boots and provisions the environment
 - `vagrant destroy -f` - Shuts down and destroys the environment
 - `vagrant halt` - Only shuts down the environment VMs (can be booted up with `vagrant up`)
@@ -113,21 +113,30 @@ _NOTE this requires a free Github account_
 You can also use the VirtualBox console to interact with the VMs or through a terminal. If you need to reset the root password, you would need to use the console. I'm constantly making upgrades to the environments, so every once and awhile run `git pull` in the repo directory to pull down changes. If you're using Windows, it's recommended to use Github Desktop so you can easily pull changes that are made to the environment. The first time you run the vagrant up command, it will download the OS images for later use. In other words, it will take longest the first time around but will be faster when it is deployed again. You can run `vagrant destroy -f` to destroy your environment at anytime. **This will erase everything**. This environment is meant to be reuseable, If you run the `vagrant up` command after destroying the environment, the OS image will already be downloaded and environment will deploy faster. Deployment should take around 15 minutes depending on your computer. You shouldn't need to access the IPA server during your practice exams. Everything should be provided that you would normally need during an actual exam. Hope this helps in your studies!
 
 ## Included systems:
+- workstation.eight.example.com
 - repo.eight.example.com
 - server1.eight.example.com
 - server2.eight.example.com
 
 ## System Details:
-> server1
-- 192.168.55.150
-- Gateway - 192.168.55.1
-- DNS - 8.8.8.8
-> server2
-- 192.168.55.151
-- Gateway - 192.168.55.1
-- DNS - 8.8.8.8
 
-There is a Repo/AppStream available to use from `http://repo.eight.example.com/BaseOS` and `http://repo.eight.example.com/AppStream`
++ **workstation:**
+  - IP - 192.168.55.148
+  - Gateway - 192.168.55.1
+  - DNS - 8.8.8.8
++ **server1:**
+  - IP - 192.168.55.150
+  - Gateway - 192.168.55.1
+  - DNS - 8.8.8.8
++ **server2:**
+  - IP - 192.168.55.151
+  - Gateway - 192.168.55.1
+  - DNS - 8.8.8.8
+
+There is a Repo/AppStream available to use:
+
++ `http://repo.eight.example.com/BaseOS`
++ `http://repo.eight.example.com/AppStream`
 
 ## Accessing the systems
 Remember to add the IP addresses to your local host file if you want to connect to the guest systems with the hostname.
