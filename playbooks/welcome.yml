@@ -8,12 +8,13 @@
   - name: Welcome to the RHCSA 8 Study/Test Environment!
     debug:
       msg:
-        - ' The repo server, Server 1, and Server 2 have been set up successfully!'
+        - ' The workstation, repo server, Server 1, and Server 2 have been set up successfully!'
         - '------------------------------------------------------------------------'
         - ' Server 1 is rebooting.  If you are unable to access it right away,'
         - ' wait a couple moments, then try again.'
         - '------------------------------------------------------------------------'
         - ' Accessing The Systems:'
+        - '- Workstation - 192.168.55.148'
         - '- Server 1 - 192.168.55.150'
         - '- Server 2 - 192.168.55.151'
         - '- Username/Password - vagrant/vagrant or root/password'

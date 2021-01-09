@@ -1,0 +1,11 @@
+[Base]
+name=Base
+baseurl=http://repo.eight.example.com/BaseOS
+gpgcheck=0
+enabled=1
+
+[AppStream]
+name=AppStream
+baseurl=http://repo.eight.example.com/AppStream
+gpgcheck=0
+enabled=1
