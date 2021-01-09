@@ -9,8 +9,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 #-------------------------------------------------------------------------------
 # Server 2 Configuration
-#-------------------------------------------------------------------------------
-
   config.vm.define "server2" do |server2|
     server2.vm.box = "rdbreak/rhel8node"
     server2.vm.network "private_network", ip: "192.168.55.151"
