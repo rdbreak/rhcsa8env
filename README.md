@@ -1,5 +1,5 @@
 # RHCSA 8 Automated Practice Deployment
-_Powered by Ansible and Vagrant_ 
+_Powered by Ansible and Vagrant_
 
 ## Installation options below:
 ## macOS
@@ -46,7 +46,7 @@ systemctl stop packagekit; dnf -y install https://dl.fedoraproject.org/pub/epel/
 - If using Windows:
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
 - [Install the Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- Then install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible` 
+- Then install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible`
 - If using Fedora, run `dnf update -y` to update your system, then run the script below as root to install everything at once:
 ```
 dnf -y install wget git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel ; wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo ; mv virtualbox.repo /etc/yum.repos.d/virtualbox.repo ; dnf install -y VirtualBox-6.0 ; usermod -a -G vboxusers ${USER} ; /usr/lib/virtualbox/vboxdrv.sh setup ; dnf -y install vagrant ; dnf remove -y rubygem-fog-core ; vagrant plugin install vagrant-guest_ansible
@@ -87,7 +87,7 @@ _NOTE this requires a free Github account_
 4. You are also able to easily pull changes when they're made available.
 
 ## Notable commands to control the environment:
-- `ansible-playbook playbooks/reset.yml` - Used for resetting Servers 1 and 2 after attempting the practice exam in the Red Hat Certs Slack workspace practice exam channel. 
+- `ansible-playbook playbooks/reset.yml` - Used for resetting Servers 1 and 2 after attempting the practice exam in the Red Hat Certs Slack workspace practice exam channel.
 - `vagrant up` - Boots and provisions the environment
 - `vagrant destroy -f` - Shuts down and destroys the environment
 - `vagrant halt` - Only shuts down the environment VMs (can be booted up with `vagrant up`)
@@ -126,8 +126,24 @@ If you're having problems with the environment, please submit an issue by going 
 
 ## Known Issues:
 
+Running `vagrant up` causes below network error on macOS Big Sur:
+```
+There was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+
+Command: ["hostonlyif", "create"]
+
+Stderr: 0%...
+Progress state: NS_ERROR_FAILURE
+VBoxManage: error: Failed to create the host-only adapter
+VBoxManage: error: VBoxNetAdpCtl: Error while adding new interface: failed to open /dev/vboxnetctl: No such file or directory
+VBoxManage: error: Details: code NS_ERROR_FAILURE (0x80004005), component HostNetworkInterfaceWrap, interface IHostNetworkInterface
+VBoxManage: error: Context: "RTEXITCODE handleCreate(HandlerArg *)" at line 95 of file VBoxManageHostonly.cpp
+```
+- Resolution: uninstall Virtualbox with uninstall script from installer. Reinstall Virtualbox from installer.
+
 Running the 'vagrant up' environment build will fail If HyperV is installed on the Windows VirtualBox host.
 Error is usually "VT-x is not available. (VERR_VMX_NO_VMX)" or similar, when the script attempts to boot the first VM.
 
-Resolution seems to be either remove HyperV, or preventing its hypervisor from starting with the command:
+- Resolution seems to be either remove HyperV, or preventing its hypervisor from starting with the command:
 bcdedit /set hypervisorlaunchtype off, followed by a reboot.
