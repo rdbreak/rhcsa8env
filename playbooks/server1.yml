@@ -20,9 +20,15 @@
       state: restarted 
   - name: Building Host File
     copy:
+      src: /vagrant/ansible_files/hosts
       dest: /etc/hosts
       content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n::1         localhost localhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151 server2.eight.example.com server2"
       force: yes
+  - name: Remove httpd
+    dnf:
+      name: 
+        - httpd
+      state: absent
   - name: Erasing Repos
     file:
       path: /etc/yum.repos.d/*
@@ -35,7 +41,6 @@
       enabled: yes
     with_items:
       - firewalld
-      - httpd
   - name: Enabling Firewall Services
     firewalld: 
       service: "{{ item }}"
@@ -43,11 +48,9 @@
       permanent: yes
       state: enabled
     with_items:
-      - http 
-      - https 
       - ntp 
       - dns
-      - ftp
+      # - ftp
   - name: Reloading Firewall
     service: name=firewalld state=restarted
   - name: Enabling IPV6
@@ -98,5 +101,9 @@
          "
   - name: Adjusting Services and Rebooting
     selinux:
-      state: permissive
+      state: enforcing
       policy: targeted
+
+   # Should be moved into exam#.yml when we have more than one exam
+  - name: set the default target to "graphical.target"
+    shell: systemctl set-default graphical.target

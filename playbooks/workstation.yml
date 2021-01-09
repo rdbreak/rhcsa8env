@@ -1,0 +1,113 @@
+---
+- name: Setting Up Workstation
+  hosts: workstation
+  strategy: free
+  ignore_errors: true
+  gather_facts: false
+  tasks:
+
+  - name: Setting Up Python
+    file:
+      src: /usr/bin/python3.6
+      path: /usr/bin/python
+      state: link
+
+  - name: Setting Hostname
+    hostname: name=workstation.eight.example.com
+
+  - name: Configuring network
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.148/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search eight.example.com ipv4.method manual
+
+  - name: Reloading Network
+    service: 
+      name: NetworkManager
+      state: restarted 
+
+  - name: Building Host File
+    copy:
+      src: /vagrant/ansible_files/hosts
+      dest: /etc/hosts
+      force: yes
+
+  - name: Install repo
+    copy:
+      src: /vagrant/ansible_files/repo8.repo
+      dest: /etc/yum.repos.d/repo8.repo
+      owner: root
+      group: root
+      mode: 0744
+      remote_src: yes
+
+  - name: Install the 'Workstation' package group
+    dnf:
+      name: 
+        - '@Workstation'
+        - freerdp
+        - httpd
+      state: present
+      update_cache: yes
+
+  - name: Create the ~/.config directory for the vagrant user
+    file: 
+      path: /home/vagrant/.config
+      state: directory
+    become_user: vagrant
+
+  - name: Disable gnome-initial-setup dialog
+    file: 
+      path: /home/vagrant/.config/gnome-initial-setup-done
+      state: touch
+    become_user: vagrant
+
+  - name: Create the autostart directory
+    file:
+      path: /home/vagrant/.config/autostart
+      state: directory
+    become_user: vagrant
+
+  - name: sets up Firefox to autostart shortcut
+    copy:
+      src: /vagrant/ansible_files/firefox.desktop
+      dest: /home/vagrant/.config/autostart/firefox.desktop
+      owner: vagrant
+      group: vagrant
+      mode: 0755
+      remote_src: yes
+
+  - name: Installing the test page
+    copy:
+      src: /vagrant/ansible_files/index.html
+      dest: /var/www/html/index.html
+      remote_src: yes
+
+  - name: Creating script to open rdp URLs
+    copy:
+      src: /vagrant/ansible_files/open_rdp.sh
+      dest: /usr/local/bin/open_rdp.sh
+      mode: 0755
+
+  - name: Creating desktop file to open RDP URLs
+    copy:
+      src: /vagrant/ansible_files/openrdp.desktop
+      dest: /usr/share/applications/openrdp.desktop
+      mode: 0755
+
+  - name: Registering new desktop file
+    shell: update-desktop-database 
+
+  - name: Starting services
+    service:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+    with_items:
+      - httpd
+
+  - name: Changing User Password
+    shell: echo vagrant | sudo passwd vagrant --stdin
+
+  - name: Changing Root Password
+    shell: echo password | sudo passwd root --stdin
+
+  - name: set the default target to "graphical.target"
+    shell: systemctl set-default graphical.target

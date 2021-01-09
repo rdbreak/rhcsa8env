@@ -20,8 +20,8 @@
       state: restarted 
   - name: Building Host File
     copy:
+      src: /vagrant/ansible_files/hosts
       dest: /etc/hosts
-      content: "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4\n:1            localhostlocalhost.localdomain localhost6 localhost6.localdomain6\n192.168.55.149 repo.eight.example.com repo\n192.168.55.150 server1.eight.example.com server1\n192.168.55.151  server2.eight.example.com server2"
       force: yes
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
@@ -50,10 +50,14 @@
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
     become: yes
+
+  ## Disabling the password so user has to recover it
+  # Should be moved into exam#.yml when we have more than one exam
   - name: Changing User Password
-    shell: echo vagrant | sudo passwd vagrant --stdin
+    shell: echo "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=15') }}" | sudo passwd vagrant --stdin
   - name: Changing Root Password
-    shell: echo password | sudo passwd root --stdin
+    shell: echo "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=15') }}" | sudo passwd root --stdin
+
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh
