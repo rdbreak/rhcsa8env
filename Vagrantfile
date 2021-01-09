@@ -14,8 +14,8 @@ config.vm.define "server2" do |server2|
   server2.vm.network "private_network", ip: "192.168.55.151"
   server2.vm.network "private_network", ip: "192.168.55.175"
   server2.vm.network "private_network", ip: "192.168.55.176"
-  server2.vm.synced_folder ".", "/vagrant", type: "rsync",
-    rsync__exclude: [".git/", "disk-0-1.vdi", "disk-0-2.vdi"]
+  server2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: [".git/", "*.vdi"]
+
   server2.vm.provider "virtualbox" do |server2|
 
     unless File.exist?(file_to_disk1)
