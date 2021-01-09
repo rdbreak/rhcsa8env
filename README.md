@@ -31,8 +31,8 @@ systemctl stop packagekit; yum install -y epel-release && yum install -y git bin
 ```
 ##### For Manjaro/Arch (Continue below for RHEL 8 specific script)
 
-You can use either the one liner code, or the [`installer_arch.sh`](installer_arch.sh) script.
 
+You can use either the one liner code, or the [`installer_arch.sh`](installer_arch.sh) script.
 Notes about the script:
 + It will only install what's missing (`--needed`)
 + It will select the default option for all the installs (`--noconfirm`)
