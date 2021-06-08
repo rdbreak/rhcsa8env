@@ -93,5 +93,5 @@
          "
   - name: Adjusting Services and Rebooting
     selinux:
-      state: permissive
+      state: enforcing
       policy: targeted
