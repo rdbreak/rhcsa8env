@@ -10,12 +10,13 @@ _Gatekeeper will block virtualbox from installing. All you have to do is go into
 ```
 
 ##### Alternatively, you can install everything individually below.
-- [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
-    - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
-- [Install the Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
-    - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
+- [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew install vagrant`)
+    - Install Ansible Vagrant plugin - `vagrant plugin install vagrant-guest_ansible`
+    - If installed, remove VirtualBox Vagrant plugin - `vagrant plugin uninstall vagrant-vbguest`
+- [Install the Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew install VirtualBox`)
+    - Virtual Box Extension Pack (`brew install virtualbox-extension-pack`)
 
-##### Once the above software is installed. Do the following if you're running the environment on Mac:
+##### Once the above software is installed. Do the following if you're running the environment on a Mac:
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhcsa8env.git`
 3. Change to the `rhcsa8env` directory that is now in your `~/bin` directory.
@@ -46,10 +47,11 @@ systemctl stop packagekit; dnf -y install https://dl.fedoraproject.org/pub/epel/
 - If using Windows:
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
 - [Install the Latest Version of Virtualbox and Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
-- Then install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible` 
+- Install the following vagrant plugin via PowerShell as Administrator `vagrant plugin install vagrant-guest_ansible`
+- Uninstall the following vagrant plugin via PowerShell as Administrator `vagrant plugin uninstall vagrant-vbguest`
 - If using Fedora, run `dnf update -y` to update your system, then run the script below as root to install everything at once:
 ```
-dnf -y install wget git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel ; wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo ; mv virtualbox.repo /etc/yum.repos.d/virtualbox.repo ; dnf install -y VirtualBox-6.0 ; usermod -a -G vboxusers ${USER} ; /usr/lib/virtualbox/vboxdrv.sh setup ; dnf -y install vagrant ; dnf remove -y rubygem-fog-core ; vagrant plugin install vagrant-guest_ansible
+dnf -y install wget git binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms libvirt libvirt-devel ruby-devel libxslt-devel libxml2-devel ; wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo ; mv virtualbox.repo /etc/yum.repos.d/virtualbox.repo ; dnf install -y VirtualBox-6.0 ; usermod -a -G vboxusers ${USER} ; /usr/lib/virtualbox/vboxdrv.sh setup ; dnf -y install vagrant ; dnf remove -y rubygem-fog-core ; vagrant plugin uninstall vagrant-vbguest ; vagrant plugin install vagrant-guest_ansible
 ```
 
 ##### Once the above software is installed. Do the following if you're running the environment on Windows:
@@ -64,7 +66,7 @@ _NOTE - If it's been awhile since you've run apt update, do that first. Reboot i
 
 ##### Install all at once by Copy/Pasting the below command into your terminal as root.
 ```
-sudo snap install ruby ; sudo apt install ruby-bundler git -y; wget -c https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.deb ; sudo dpkg -i vagrant_2.2.6_x86_64.deb ; wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add - ; wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add - ; sudo add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian bionic contrib"; sudo apt update; sudo apt install -y virtualbox-6.0 ; vagrant plugin install vagrant-guest_ansible
+sudo snap install ruby ; sudo apt install ruby-bundler git -y; wget -c https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.deb ; sudo dpkg -i vagrant_2.2.6_x86_64.deb ; wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add - ; wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add - ; sudo add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian bionic contrib"; sudo apt update; sudo apt install -y virtualbox-6.0 ; vagrant plugin uninstall vagrant-vbguest ; vagrant plugin install vagrant-guest_ansible
 ```
 ##### Also, install the Virtualbox extension pack below
 - [Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
@@ -100,19 +102,18 @@ You can also use the VirtualBox console to interact with the VMs or through a te
 ## Included systems:
 - repo.eight.example.com
 - server1.eight.example.com
-- server2.eight.example.com
 
 ## System Details:
+> repo
+- 192.168.55.149
+- Gateway - 192.168.55.1
+- DNS - 8.8.8.8
+
+_There's a Repo/AppStream available to use from `http://repo.eight.example.com/BaseOS` and `http://repo.eight.example.com/AppStream`_
 > server1
 - 192.168.55.150
 - Gateway - 192.168.55.1
 - DNS - 8.8.8.8
-> server2
-- 192.168.55.151
-- Gateway - 192.168.55.1
-- DNS - 8.8.8.8
-
-There is a Repo/AppStream available to use from `http://repo.eight.example.com/BaseOS` and `http://repo.eight.example.com/AppStream`
 
 ## Accessing the systems
 Remember to add the IP addresses to your local host file if you want to connect to the guest systems with the hostname.
@@ -122,12 +123,12 @@ Password - vagrant
 Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system`
 
 ## Help
-If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join to get your questions answered, check out the Red Hat Certs Slack Workspace. You can find the invite link at the top of this page next to the description.
+ - If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join to get your questions answered, check out the Red Hat Certs Slack Workspace. You can find the invite link at the top of this page next to the description.
 
 ## Known Issues:
 
-Running the 'vagrant up' environment build will fail If HyperV is installed on the Windows VirtualBox host.
-Error is usually "VT-x is not available. (VERR_VMX_NO_VMX)" or similar, when the script attempts to boot the first VM.
+ - Running the 'vagrant up' environment build will fail If HyperV is installed on the Windows VirtualBox host.
+   Error is usually "VT-x is not available. (VERR_VMX_NO_VMX)" or similar, when the script attempts to boot the first VM.
 
-Resolution seems to be either remove HyperV, or preventing its hypervisor from starting with the command:
-bcdedit /set hypervisorlaunchtype off, followed by a reboot.
+ - Workaround is to remove HyperV, or preventing its hypervisor from starting with the command:
+   `bcdedit /set hypervisorlaunchtype off`, followed by a reboot.
