@@ -19,11 +19,11 @@ config.vm.define "server2" do |server2|
     server2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
 
     unless File.exist?(file_to_disk1)
-        server2.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 8 * 1024]
+        server2.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 16 * 1024]
       end
 
       unless File.exist?(file_to_disk2)
-        server2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 8 * 1024]
+        server2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 16 * 1024]
       end
 
       server2.memory = "2048"
