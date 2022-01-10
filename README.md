@@ -6,14 +6,14 @@ _Powered by Ansible and Vagrant_
 _Gatekeeper will block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
 ##### Install all at once with the command below:
 ```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew install --cask vagrant ; brew install --cask VirtualBox ; brew install --cask virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible
 ```
 
 ##### Alternatively, you can install everything individually below.
-- [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
+- [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew install --cask vagrant`)
     - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
-- [Install the Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
-    - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
+- [Install the Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew install --cask VirtualBox`)
+    - Virtual Box Extension Pack (`brew install --cask virtualbox-extension-pack`)
 
 ##### Once the above software is installed. Do the following if you're running the environment on Mac:
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
