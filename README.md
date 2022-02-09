@@ -131,3 +131,24 @@ Error is usually "VT-x is not available. (VERR_VMX_NO_VMX)" or similar, when the
 
 Resolution seems to be either remove HyperV, or preventing its hypervisor from starting with the command:
 bcdedit /set hypervisorlaunchtype off, followed by a reboot.
+
+If you encounter the following issue, that is preventing you from deploying the machines :
+
+> The IP address configured for the host-only network is not within the
+allowed ranges. Please update the address used to be within the allowed
+ranges and run the command again.
+
+  Address: 192.168.55.151
+  Ranges: 192.168.56.0/21
+
+Valid ranges can be modified in the /etc/vbox/networks.conf file. For
+more information including valid format see:
+
+  https://www.virtualbox.org/manual/ch06.html#network_hostonly
+
+- On Linux and MacOS, you need to modify, as root, the `/etc/vbox/networks.conf` file (you can find more explaination in the above link) by adding :
+
+```
+* 192.168.55.0/24
+```
+
