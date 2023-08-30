@@ -129,7 +129,9 @@ Issus fixed by change the repo.vm.synced_folder from
                                     repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/", rsync__exclude: "*.vdi"
 to                                  
                                     repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: [".git/", "disk-0-1.vdi", "disk-0-2.vdi", ".github"]
-This fixed my issue thanks!
+This fixed issue
+
+
 
 Running the 'vagrant up' environment build will fail If HyperV is installed on the Windows VirtualBox host.
 Error is usually "VT-x is not available. (VERR_VMX_NO_VMX)" or similar, when the script attempts to boot the first VM.
