@@ -125,6 +125,13 @@ Access example - `ssh vagrant@192.168.55.150` or `vagrant ssh system`
 If you're having problems with the environment, please submit an issue by going to the `ISSUES` tab at the top. If you have more questions, looking for practice exams to use against this environment, or just looking for a fantastic Red Hat community to join to get your questions answered, check out the Red Hat Certs Slack Workspace. You can find the invite link at the top of this page next to the description.
 
 ## Known Issues:
+Issus fixed by change the repo.vm.synced_folder from
+                                    repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/", rsync__exclude: "*.vdi"
+to                                  
+                                    repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: [".git/", "disk-0-1.vdi", "disk-0-2.vdi", ".github"]
+This fixed issue
+
+
 
 Running the 'vagrant up' environment build will fail If HyperV is installed on the Windows VirtualBox host.
 Error is usually "VT-x is not available. (VERR_VMX_NO_VMX)" or similar, when the script attempts to boot the first VM.
